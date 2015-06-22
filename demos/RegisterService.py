@@ -58,7 +58,7 @@ class RegisterService(soaphandler.SoapHandler):
         response.names = names
         response.datetimeregister = datetime.datetime.now()
         response.isvalid = True
-        response.message = 'Your register for email : %s'%email
+        response.message = 'Your register for email : %s' % email
 
         return response
 

@@ -47,7 +47,7 @@ class Repository(soaphandler.SoapHandler):
     def save(self, msg):
         global repo
         repo[msg.doc.number] = msg.doc
-        return 'Save document number : %d'%msg.doc.number
+        return 'Save document number : %d' % msg.doc.number
 
     @webservice(_params=int,_returns=Message)
     def find(self, num):
@@ -65,7 +65,7 @@ class Repository(soaphandler.SoapHandler):
             response.msg = 'OK'
         except:
             response.doc = Document()
-            response.msg = 'Document number %d dont exist'%num
+            response.msg = 'Document number %d dont exist' % num
         return response
 
 if __name__ == '__main__':

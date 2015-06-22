@@ -91,7 +91,7 @@ def soapfault(faultstring):
     fault = soap.SoapMessage()
     faultmsg = '<soapenv:Fault xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope">\n'
     faultmsg += '<faultcode></faultcode>\n'
-    faultmsg += '<faultstring>%s</faultstring>\n'%faultstring
+    faultmsg += '<faultstring>%s</faultstring>\n' % faultstring
     faultmsg += '</soapenv:Fault>\n'
     fault.setBody(xml.dom.minidom.parseString(faultmsg))
     return fault
@@ -131,8 +131,8 @@ class SoapHandler(tornado.web.RequestHandler):
                 wsdl_data = {'args':wsdl_args,'input':('params',wsdl_input),'output':('returns',wsdl_output),'operation':wsdl_operation}
                 wsdl_methods.append(wsdl_data)
 
-        wsdl_targetns = 'http://%s:%s/%s'%(address,port,wsdl_nameservice)
-        wsdl_location = 'http://%s:%s/%s'%(address,port,wsdl_nameservice)
+        wsdl_targetns = 'http://%s:%s/%s' % (address,port,wsdl_nameservice)
+        wsdl_location = 'http://%s:%s/%s' % (address,port,wsdl_nameservice)
         query = self.request.query
         self.set_header('Content-Type','application/xml; charset=UTF-8')
         if query.upper() == 'WSDL':
@@ -336,13 +336,13 @@ class SoapHandler(tornado.web.RequestHandler):
             i = 1
             for r in result:
                 if is_array == True:
-                    xmlresponse += '<value>%s</value>\n'%str(r)
+                    xmlresponse += '<value>%s</value>\n' % str(r)
                 else:
-                    xmlresponse += '<value%d>%s</value%d>\n'%(i,str(r),i)
+                    xmlresponse += '<value%d>%s</value%d>\n' % (i,str(r),i)
                 i+=1
             xmlresponse += '</returns>\n'
         else:
-            xmlresponse = '<returns>%s</returns>\n'%str(result)
+            xmlresponse = '<returns>%s</returns>\n' % str(result)
 
         response = xml.dom.minidom.parseString(xmlresponse)
 
