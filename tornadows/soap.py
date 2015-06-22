@@ -43,7 +43,7 @@ class SoapMessage:
                 ' '.join((envurl, envurl)))
         self._soap.appendChild(self._envelope)
         self._header = self._soap.createElement('soapenv:Header')
-        self._body   = self._soap.createElement('soapenv:Body')
+        self._body = self._soap.createElement('soapenv:Body')
         self._envelope.appendChild(self._header)
         self._envelope.appendChild(self._body)
 

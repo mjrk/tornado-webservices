@@ -23,13 +23,13 @@
 
         class Person(ComplexType):
         name = StringProperty()
-        age  = IntegerProperty()
+        age = IntegerProperty()
 
     or you can use some python types
 
     class Person(ComplexType):
         name = str
-        age  = int
+        age = int
 
     is equivalent to:
 
@@ -149,7 +149,7 @@ class ComplexType(object):
 
         class Person(ComplexType):
         name = StringProperty
-        age  = IntegerProperty
+        age = IntegerProperty
 
         if __name__ == '__main__':
         print 'XML Schema : '
@@ -157,7 +157,7 @@ class ComplexType(object):
 
         p = Person()
         p.name.value = 'Steve J'
-        p.age.value  = 38
+        p.age.value = 38
 
         print('XML Document : ')
         print(p.toXML())
@@ -168,7 +168,7 @@ class ComplexType(object):
 
         class Person(ComplexType):
         name = str
-        age  = int
+        age = int
 
         if __name__ == '__main__':
         print('XML Schema : ')
@@ -176,7 +176,7 @@ class ComplexType(object):
 
         p = Person()
         p.name.value = 'Steve J'
-        p.age.value  = 38
+        p.age.value = 38
 
         print('XML Document : ')
         print(p.toXML())
@@ -234,7 +234,7 @@ class ComplexType(object):
             Return a string with the xml schema.
          """
         name = cls.__name__
-        xsd  = cls._generateXSD(ltype=ltype)
+        xsd = cls._generateXSD(ltype=ltype)
         return xsd
 
     @classmethod
@@ -244,7 +244,7 @@ class ComplexType(object):
          """
         default_attr = dir(type('default',(object,),{}))
         name = cls.__name__
-        xsd  = '<%s:complexType name="%s" xmlns:%s="%s">'%(namespace,name,namespace,xmlns)
+        xsd = '<%s:complexType name="%s" xmlns:%s="%s">'%(namespace,name,namespace,xmlns)
         xsd += '<%s:sequence>'%namespace
         complextype = []
 
@@ -362,10 +362,10 @@ class ComplexType(object):
 def xml2object(xml,xsd,complex,method=''):
     """ Function that converts a XML document in a instance of a python class """
     namecls = complex.getName()
-    types   = xsd2dict(xsd)
-    lst     = xml2list(xml,namecls,types,method=method)
-    tps     = cls2dict(complex)
-    obj     = generateOBJ(lst,namecls,tps)
+    types = xsd2dict(xsd)
+    lst = xml2list(xml,namecls,types,method=method)
+    tps = cls2dict(complex)
+    obj = generateOBJ(lst,namecls,tps)
     return obj
 
 def cls2dict(complex):
@@ -434,7 +434,7 @@ def generateOBJ(d,namecls,types):
     dct = {}
     lst = []
     for a in d:
-        name  = a[0]
+        name = a[0]
         value = a[1]
         isarray = a[2]
         if isinstance(value,list):
@@ -523,20 +523,20 @@ def convert(typeelement,value):
     elif typeelement == 'xsd:time' or typeelement == 'time':
         stime = str(value).split(':')
         hour = stime[0]
-        min  = stime[1]
-        seg  = '00'
+        min = stime[1]
+        seg = '00'
         if len(stime) >= 3:
             seg = stime[2].split('.')[0]
         return time(int(hour),int(min),int(seg))
     elif typeelement == 'xsd:dateTime' or typeelement == 'datetime':
         sdatetime = str(value).replace('T','-').replace(' ','-').replace('+','-').split('-')
-        year  = sdatetime[0]
-        mon   = sdatetime[1]
-        day   = sdatetime[2]
+        year = sdatetime[0]
+        mon = sdatetime[1]
+        day = sdatetime[2]
         stime = sdatetime[3].split(':')
-        hour  = stime[0]
-        min   = stime[1]
-        seg   = '00'
+        hour = stime[0]
+        min = stime[1]
+        seg = '00'
         if len(stime) >= 3:
             seg = stime[2].split('.')[0]
         return datetime(int(year),int(mon),int(day),int(hour),int(min),int(seg)).isoformat('T')

@@ -48,6 +48,6 @@ class MathService(soaphandler.SoapHandler):
 if __name__ == '__main__':
       service = [('MathService',MathService)]
       app = webservices.WebService(service)
-      ws  = tornado.httpserver.HTTPServer(app)
+      ws = tornado.httpserver.HTTPServer(app)
       ws.listen(8080)
       tornado.ioloop.IOLoop.instance().start()

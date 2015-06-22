@@ -30,9 +30,9 @@ import datetime
 
 class RegisterRequest(complextypes.ComplexType):
     iduser = str
-    names  = str
+    names = str
     birthdate = datetime.date
-    email  = str
+    email = str
 
 
 class RegisterResponse(complextypes.ComplexType):
@@ -47,15 +47,15 @@ class RegisterService(soaphandler.SoapHandler):
 
     @webservice(_params=RegisterRequest, _returns=RegisterResponse)
     def register(self, register):
-        iduser    = register.iduser
-        names     = register.names
+        iduser = register.iduser
+        names = register.names
         birthdate = register.birthdate
-        email     = register.email
+        email = register.email
 
         # Here you can insert the user in a database
         response = RegisterResponse()
         response.idregister = 1
-        response.names      = names
+        response.names = names
         response.datetimeregister = datetime.datetime.now()
         response.isvalid = True
         response.message = 'Your register for email : %s'%email

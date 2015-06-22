@@ -89,7 +89,7 @@ def soapfault(faultstring):
         for Soap Envelope
      """
     fault = soap.SoapMessage()
-    faultmsg  = '<soapenv:Fault xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope">\n'
+    faultmsg = '<soapenv:Fault xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope">\n'
     faultmsg += '<faultcode></faultcode>\n'
     faultmsg += '<faultstring>%s</faultstring>\n'%faultstring
     faultmsg += '</soapenv:Fault>\n'
@@ -114,21 +114,21 @@ class SoapHandler(tornado.web.RequestHandler):
         if len(self.request.headers['Host'].split(':')) >= 2:
             port = self.request.headers['Host'].split(':')[1]
         wsdl_nameservice = self.request.uri.replace('/','').replace('?wsdl','').replace('?WSDL','')
-        wsdl_input       = None
-        wsdl_output      = None
-        wsdl_operation   = None
-        wsdl_args        = None
-        wsdl_methods     = []
+        wsdl_input = None
+        wsdl_output = None
+        wsdl_operation = None
+        wsdl_args = None
+        wsdl_methods = []
 
         for operations in dir(self):
             operation = getattr(self,operations)
             if callable(operation) and hasattr(operation,'_input') and hasattr(operation,'_output') and hasattr(operation,'_operation') \
                and hasattr(operation,'_args') and hasattr(operation,'_is_operation'):
-                wsdl_input     = getattr(operation,'_input')
-                wsdl_output    = getattr(operation,'_output')
+                wsdl_input = getattr(operation,'_input')
+                wsdl_output = getattr(operation,'_output')
                 wsdl_operation = getattr(operation,'_operation')
-                wsdl_args      = getattr(operation,'_args')
-                wsdl_data      = {'args':wsdl_args,'input':('params',wsdl_input),'output':('returns',wsdl_output),'operation':wsdl_operation}
+                wsdl_args = getattr(operation,'_args')
+                wsdl_data = {'args':wsdl_args,'input':('params',wsdl_input),'output':('returns',wsdl_output),'operation':wsdl_operation}
                 wsdl_methods.append(wsdl_data)
 
         wsdl_targetns = 'http://%s:%s/%s'%(address,port,wsdl_nameservice)
@@ -198,7 +198,7 @@ class SoapHandler(tornado.web.RequestHandler):
         response = None
         res = None
         typesinput = getattr(operation,'_input')
-        args  = getattr(operation,'_args')
+        args = getattr(operation,'_args')
         if inspect.isclass(typesinput) and issubclass(typesinput,complextypes.ComplexType):
             obj = self._parseComplexType(typesinput,self._request.getBody()[0],method=method)
             response = operation(obj)
@@ -237,7 +237,7 @@ class SoapHandler(tornado.web.RequestHandler):
         namespace = document.documentElement.namespaceURI
 
         header = self._getElementFromMessage('Header',document)
-        body   = self._getElementFromMessage('Body',document)
+        body = self._getElementFromMessage('Body',document)
 
         header_elements = self._parseXML(header)
         body_elements = self._parseXML(body)
@@ -281,7 +281,7 @@ class SoapHandler(tornado.web.RequestHandler):
 
     def _parseComplexType(self,complex,xmld,method=''):
         """ Private method for generate an instance of class nameclass. """
-        xsdd  = '<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+        xsdd = '<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
         xsdd += complex.toXSD(method=method,ltype=[])
         xsdd += '</xsd:schema>'
         xsd = xml.dom.minidom.parseString(xsdd)
@@ -294,7 +294,7 @@ class SoapHandler(tornado.web.RequestHandler):
             the values of the request document like parameters for the soapmethod,
             this method return a list values of parameters.
          """
-        values   = []
+        values = []
         for tagname in args:
             type = types[tagname]
             values += self._findValues(tagname,type,elements)

@@ -76,6 +76,6 @@ if __name__ == '__main__':
                 ('DivService',DivService),
                 ('FibonacciService',FibonacciService)]
      app = webservices.WebService(service)
-     ws  = tornado.httpserver.HTTPServer(app)
+     ws = tornado.httpserver.HTTPServer(app)
      ws.listen(8080)
      tornado.ioloop.IOLoop.instance().start()

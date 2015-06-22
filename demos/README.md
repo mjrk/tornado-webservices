@@ -78,8 +78,8 @@ For example:
      from tornadows import complextypes
 
      class Product(complextypes.ComplexType):
-          id    = complextypes.IntegerPropert()
-          name  = complextypes.StringProperty()
+          id = complextypes.IntegerPropert()
+          name = complextypes.StringProperty()
           price = complextypes.FloatProperty()
           stock = complextypes.IntegerProperty()
 
@@ -216,12 +216,12 @@ For example:
      from tornadows import complextypes
     
      class User(complextypes.ComplexType):
-          username  = str
-          roles     = [str]
+          username = str
+          roles = [str]
 
      class ListOfUser(complextypes.ComplexType):
           idlist = int
-          list   = [User]
+          list = [User]
 
 The classes are tranformed into the following xml schema.
 

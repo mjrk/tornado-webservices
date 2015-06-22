@@ -25,20 +25,20 @@ from tornadows import complextypes
 
 def createElementXML(name, type, prefix='xsd'):
     """ Function used for the creation of xml elements. """
-    return '<%s:element name="%s" type="%s:%s"/>'%(prefix, name, prefix, type)
+    return '<%s:element name="%s" type="%s:%s"/>' % (prefix, name, prefix, type)
 
 
 def createArrayXML(name, type, prefix='xsd', maxoccurs=None):
     """ Function used for the creation of xml complexElements """
-    complexType  = '<%s:complexType name="%sParams">\n'%(prefix, name)
-    complexType += '<%s:sequence>\n'%prefix
-    if maxoccurs == None:
-        complexType += '<%s:element name="value" type="%s:%s" maxOccurs="unbounded"/>\n'%(prefix, prefix, type)
+    complexType = '<%s:complexType name="%sParams">\n' % (prefix, name)
+    complexType += '<%s:sequence>\n' % prefix
+    if maxoccurs is None:
+        complexType += '<%s:element name="value" type="%s:%s" maxOccurs="unbounded"/>\n' % (prefix, prefix, type)
     else:
-        complexType += '<%s:element name="value" type="%s:%s" maxOccurs="%d"/>\n'%(prefix, prefix, type, maxoccurs)
-    complexType += '</%s:sequence>\n'%prefix
-    complexType += '</%s:complexType>\n'%prefix
-    complexType += '<%s:element name="%s" type="tns:%sParams"/>\n'%(prefix, name, name)
+        complexType += '<%s:element name="value" type="%s:%s" maxOccurs="%d"/>\n' % (prefix, prefix, type, maxoccurs)
+    complexType += '</%s:sequence>\n' % prefix
+    complexType += '</%s:complexType>\n' % prefix
+    complexType += '<%s:element name="%s" type="tns:%sParams"/>\n' % (prefix, name, name)
     return complexType
 
 
@@ -63,7 +63,7 @@ class Array:
     """
     def __init__(self, type, maxOccurs=None):
         self._type = type
-        self._n    = maxOccurs
+        self._n = maxOccurs
 
     def createArray(self, name):
         type = None
@@ -82,10 +82,10 @@ class Array:
             type = self._type.getType(self._type)
         maxoccurs = self._n
         complexType = ''
-        if self._n == None:
-            complexType += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>\n'%(prefix, name, prefix, type)
+        if self._n is None:
+            complexType += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>\n' % (prefix, name, prefix, type)
         else:
-            complexType += '<%s:element name="%s" type="%s:%s" maxOccurs="%d"/>\n'%(prefix, name, prefix, type, maxoccurs)
+            complexType += '<%s:element name="%s" type="%s:%s" maxOccurs="%d"/>\n' % (prefix, name, prefix, type, maxoccurs)
         return complexType
 
     def genType(self, v):

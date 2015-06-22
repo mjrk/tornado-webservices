@@ -46,8 +46,8 @@ class Input(complextypes.ComplexType):
 
 
 class Product(complextypes.ComplexType):
-    id    = complextypes.IntegerProperty()
-    name  = complextypes.StringProperty()
+    id = complextypes.IntegerProperty()
+    name = complextypes.StringProperty()
     price = complextypes.FloatProperty()
     stock = complextypes.IntegerProperty()
 
@@ -62,8 +62,8 @@ class ProductService(soaphandler.SoapHandler):
 
         output = Product()
 
-        output.id.value    = id
-        output.name.value  = reg[0]
+        output.id.value = id
+        output.name.value = reg[0]
         output.price.value = reg[1]
         output.stock.value = reg[2]
 
@@ -89,6 +89,6 @@ class ProductService(soaphandler.SoapHandler):
 if __name__ == '__main__':
     service = [('ProductService',ProductService)]
     app = webservices.WebService(service)
-    ws  = tornado.httpserver.HTTPServer(app)
+    ws = tornado.httpserver.HTTPServer(app)
     ws.listen(8080)
     tornado.ioloop.IOLoop.instance().start()
