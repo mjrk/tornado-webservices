@@ -22,27 +22,27 @@ from tornadows import xmltypes
 from tornadows.soaphandler import webservice
 
 class MathService(soaphandler.SoapHandler):
-	""" Service that provides math operations of two float numbers """
-	@webservice(_params=[float,float],_returns=float)
-	def add(self, a, b):
-		result = a+b
-		return result
-	@webservice(_params=[float,float],_returns=float)
-	def sub(self, a, b):
-		result = a-b
-		return result
-	@webservice(_params=[float,float],_returns=float)
-	def mult(self, a, b):
-		result = a*b
-		return result
-	@webservice(_params=[float,float],_returns=float)
-	def div(self, a, b):
-		result = a/b
-		return result
+    """ Service that provides math operations of two float numbers """
+    @webservice(_params=[float,float],_returns=float)
+    def add(self, a, b):
+        result = a+b
+        return result
+    @webservice(_params=[float,float],_returns=float)
+    def sub(self, a, b):
+        result = a-b
+        return result
+    @webservice(_params=[float,float],_returns=float)
+    def mult(self, a, b):
+        result = a*b
+        return result
+    @webservice(_params=[float,float],_returns=float)
+    def div(self, a, b):
+        result = a/b
+        return result
 
 if __name__ == '__main__':
-  	service = [('MathService',MathService)]
-  	app = webservices.WebService(service)
-  	ws  = tornado.httpserver.HTTPServer(app)
-  	ws.listen(8080)
-  	tornado.ioloop.IOLoop.instance().start()
+      service = [('MathService',MathService)]
+      app = webservices.WebService(service)
+      ws  = tornado.httpserver.HTTPServer(app)
+      ws.listen(8080)
+      tornado.ioloop.IOLoop.instance().start()

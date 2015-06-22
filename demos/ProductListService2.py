@@ -28,67 +28,67 @@ from tornadows.soaphandler import webservice
 
     Product is a class that represents Product data structure.
 
-	id: Is a int python type. Is the product id
-	name: Is a str python type. Is the name of product. 
-	price: Is a float python type. Is the price of product.
-	stock: Is a int python type. Is the stock of product.
+    id: Is a int python type. Is the product id
+    name: Is a str python type. Is the name of product. 
+    price: Is a float python type. Is the price of product.
+    stock: Is a int python type. Is the stock of product.
 
     List is a class that represents the response of the web services.
     This is a list of Product.
 
-	product: Is a python list with a set of product (Product class).
+    product: Is a python list with a set of product (Product class).
 
-	The operation have not input parameters.
+    The operation have not input parameters.
 
 """
 
 class Product(complextypes.ComplexType):
-	id    = int
-	name  = str
-	price = float
-	stock = int
+    id    = int
+    name  = str
+    price = float
+    stock = int
 
 class List(complextypes.ComplexType):
-	product = [Product]
+    product = [Product]
 
 class ProductListService2(soaphandler.SoapHandler):
-	@webservice(_params=None,_returns=List)
-	def getProductList(self):
+    @webservice(_params=None,_returns=List)
+    def getProductList(self):
 
-		listOfProduct = List()
-		
-		for i in [1,2,3,4,5,6,7]:
-			reg = self.database(i)
-			output = Product()
-			output.id    = i
-			output.name  = reg[0]
-			output.price = reg[1]
-			output.stock = reg[2]
-	
-			listOfProduct.product.append(output)
+        listOfProduct = List()
+        
+        for i in [1,2,3,4,5,6,7]:
+            reg = self.database(i)
+            output = Product()
+            output.id    = i
+            output.name  = reg[0]
+            output.price = reg[1]
+            output.stock = reg[2]
+    
+            listOfProduct.product.append(output)
 
-		return listOfProduct
+        return listOfProduct
 
-	def database(self,id):
-		""" This method simulates a database of products """
-		db = {1:('COMPUTER',1000.5,100),
- 		      2:('MOUSE',10.0,300),
-		      3:('PENCIL BLUE',0.50,500),
-		      4:('PENCIL RED',0.50,600),
-		      5:('PENCIL WHITE',0.50,900),
-		      6:('HEADPHONES',15.7,500),
-		      7:('MACBOOK',80.78,300),
-		     }
-		row = (None,0.0,0)
-		try:
-			row = db[id]
-		except:
-			None
-		return row
-	
+    def database(self,id):
+        """ This method simulates a database of products """
+        db = {1:('COMPUTER',1000.5,100),
+               2:('MOUSE',10.0,300),
+              3:('PENCIL BLUE',0.50,500),
+              4:('PENCIL RED',0.50,600),
+              5:('PENCIL WHITE',0.50,900),
+              6:('HEADPHONES',15.7,500),
+              7:('MACBOOK',80.78,300),
+             }
+        row = (None,0.0,0)
+        try:
+            row = db[id]
+        except:
+            None
+        return row
+    
 if __name__ == '__main__':
-	service = [('ProductListService2',ProductListService2)]
-	app = webservices.WebService(service)
-	ws  = tornado.httpserver.HTTPServer(app)
-	ws.listen(8080)
-	tornado.ioloop.IOLoop.instance().start()
+    service = [('ProductListService2',ProductListService2)]
+    app = webservices.WebService(service)
+    ws  = tornado.httpserver.HTTPServer(app)
+    ws.listen(8080)
+    tornado.ioloop.IOLoop.instance().start()

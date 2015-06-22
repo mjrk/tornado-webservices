@@ -24,43 +24,43 @@ from tornadows.soaphandler import webservice
 
 """ This web services shows how uses complextypes and classes python.
 
-	User is a python class with two attributes:
-		username : is a python str type with the username.
-		roles    : is a python list of str (roles for the username).
+    User is a python class with two attributes:
+        username : is a python str type with the username.
+        roles    : is a python list of str (roles for the username).
 
-	ListOfUser is another class with two attributes:
-		idlist : is a python str type.
-		roles  : is a python list of User (python class).
+    ListOfUser is another class with two attributes:
+        idlist : is a python str type.
+        roles  : is a python list of User (python class).
 
 """
 class User(complextypes.ComplexType):
-	username = str
-	roles = [str]
+    username = str
+    roles = [str]
 
 class ListOfUser(complextypes.ComplexType):
-	idlist = int
-	list = [User]
+    idlist = int
+    list = [User]
 
 class UserRolesService(soaphandler.SoapHandler):
-	@webservice(_params=xmltypes.Integer,_returns=ListOfUser)
-	def getUsers(self, idlist):
-		user1 = User()
-		user1.username = 'steve'
-		user1.roles = ['ceo','admin']
-		
-		user2 = User()
-		user2.username = 'billy'
-		user2.roles = ['developer']
+    @webservice(_params=xmltypes.Integer,_returns=ListOfUser)
+    def getUsers(self, idlist):
+        user1 = User()
+        user1.username = 'steve'
+        user1.roles = ['ceo','admin']
 
-		listusers = ListOfUser()
-		listusers.idlist = idlist
-		listusers.list = [user1, user2]
+        user2 = User()
+        user2.username = 'billy'
+        user2.roles = ['developer']
 
-		return listusers
-	
+        listusers = ListOfUser()
+        listusers.idlist = idlist
+        listusers.list = [user1, user2]
+
+        return listusers
+
 if __name__ == '__main__':
-	service = [('UserRolesService',UserRolesService)]
-	app = webservices.WebService(service)
-	ws  = tornado.httpserver.HTTPServer(app)
-	ws.listen(8080)
-	tornado.ioloop.IOLoop.instance().start()
+    service = [('UserRolesService',UserRolesService)]
+    app = webservices.WebService(service)
+    ws  = tornado.httpserver.HTTPServer(app)
+    ws.listen(8080)
+    tornado.ioloop.IOLoop.instance().start()

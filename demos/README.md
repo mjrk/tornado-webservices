@@ -20,7 +20,7 @@ elements in the list.
 
 This service used _params=xmltypes.Array(xmltypes.String) like input, 
 what mean his input parameter is a array of string elements.
-	
+    
      xmltypes.Array(xmltypes.String) create an xml element with maxOccurs
      property with the value "unbounded" for wsdl.
 
@@ -74,7 +74,7 @@ This web service uses complextypes by transforming a python class in an
 xml schema within the definition of the schemas of WSDL.
 
 For example:
-		
+        
      from tornadows import complextypes
 
      class Product(complextypes.ComplexType):
@@ -122,7 +122,7 @@ The request is:
                     </get:Input>
                </soapenv:Body>
      </soapenv:Envelope>
- 	
+     
 The response of the web service is:
 
      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -136,7 +136,7 @@ The response of the web service is:
                     </Product>
           </soapenv:Body>
      </soapenv:Envelope>
-	
+    
 You can use the SoapUI for testing. See the code in the ProductService.py
 
 Running the ProducListService.py example:
@@ -212,9 +212,9 @@ The service receive a idlist (integer) and returns a list of users with username
 python list with roles.
 
 For example:
-		
+        
      from tornadows import complextypes
-	
+    
      class User(complextypes.ComplexType):
           username  = str
           roles     = [str]
@@ -233,7 +233,7 @@ The classes are tranformed into the following xml schema.
           </xsd:complexType>
           <xsd:element name="params" type="tns:paramsTypes"/>
           <xsd:complexType name="ListOfUser">
-	       <xsd:sequence>
+           <xsd:sequence>
                     <xsd:element name="idlist" type="xsd:integer"/>
                     <xsd:element maxOccurs="unbounded" name="list" type="tns:User"/>
                </xsd:sequence>
@@ -248,9 +248,9 @@ The classes are tranformed into the following xml schema.
 
           <xsd:element name="ListOfUser" type="tns:ListOfUser"/>
      </xsd:schema>
-	
-Python lists are represented like xml elements with the maxOccurs attribute unbounded.	
-	
+    
+Python lists are represented like xml elements with the maxOccurs attribute unbounded.    
+    
 The soap request is:
 
      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:get="http://127.0.1.1:8080/UserRolesService/getUsers">
@@ -313,17 +313,17 @@ Running the RegisterService.py example:
 
 Running:
 
-	$ python RegisterService.py
+    $ python RegisterService.py
 
-	1.- RegisterService (http://localhost:8080/RegisterService?wsdl):
+    1.- RegisterService (http://localhost:8080/RegisterService?wsdl):
 
-	This example is similar to CertService.py.
+    This example is similar to CertService.py.
 
-	The example uses a RegisterRequest like input to the web service.
-	The operation register() of the web service simulates the service of register.
-	The operation response a RegisterResponse with information of the register.
+    The example uses a RegisterRequest like input to the web service.
+    The operation register() of the web service simulates the service of register.
+    The operation response a RegisterResponse with information of the register.
 
-	See the code of RegisterService.py for more details.
+    See the code of RegisterService.py for more details.
 
 
 Running the CurrentTempService.py example:

@@ -20,38 +20,38 @@ from tornadows.soaphandler import webservice
 import datetime
 
 """ This example uses python datetime module. 
-	python datetime.date is equivalent to xml type: xsd:date
-	python datetime.datetime is equivalent to xml type: xsd:dateTime
-	python datetime.time is equivalent to xml type: xsd:time
+    python datetime.date is equivalent to xml type: xsd:date
+    python datetime.datetime is equivalent to xml type: xsd:dateTime
+    python datetime.time is equivalent to xml type: xsd:time
 """
 class InputRequest(complextypes.ComplexType):
-	idperson = str
+    idperson = str
 
 class CertificateResponse(complextypes.ComplexType):
-	numcert = int
-	idperson = str
-	nameperson = str
-	birthday = datetime.date
-	datetimecert = datetime.datetime
-	isvalid = bool
+    numcert = int
+    idperson = str
+    nameperson = str
+    birthday = datetime.date
+    datetimecert = datetime.datetime
+    isvalid = bool
 
 class CertService(soaphandler.SoapHandler):
-	@webservice(_params=InputRequest, _returns=CertificateResponse)
-	def getCertificate(self, input):
-		idperson = input.idperson
+    @webservice(_params=InputRequest, _returns=CertificateResponse)
+    def getCertificate(self, input):
+        idperson = input.idperson
 
-		cert = CertificateResponse()
-		cert.numcert = 1
-		cert.idperson = idperson
-		cert.nameperson = 'Steve J'
-		cert.birthday = datetime.date(1973,12,11)
-		cert.datetimecert = datetime.datetime.now()
-		cert.isvalid = True
+        cert = CertificateResponse()
+        cert.numcert = 1
+        cert.idperson = idperson
+        cert.nameperson = 'Steve J'
+        cert.birthday = datetime.date(1973,12,11)
+        cert.datetimecert = datetime.datetime.now()
+        cert.isvalid = True
 
-		return cert
+        return cert
 
 if __name__ == '__main__':
-	service = [('CertService',CertService)]
-	app = webservices.WebService(service)
-	app.listen(8080)
-	tornado.ioloop.IOLoop.instance().start()
+    service = [('CertService',CertService)]
+    app = webservices.WebService(service)
+    app.listen(8080)
+    tornado.ioloop.IOLoop.instance().start()

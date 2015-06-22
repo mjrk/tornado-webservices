@@ -17,16 +17,16 @@
 from distutils.core import setup
 
 try:
-	from setuptools import setup
+    from setuptools import setup
 except ImportError:
-	pass
+    pass
 
 
 setup(
-	name='tornado-webservices',
-	version = '0.9.5.0',
-	packages=['tornadows','demos'],
-	author='Innovaser',
-	author_email='rancavil@innovaser.cl',
-	install_requires=['tornado',],
+    name='tornado-webservices',
+    version = '0.9.5.0',
+    packages=['tornadows','demos'],
+    author='Innovaser',
+    author_email='rancavil@innovaser.cl',
+    install_requires=['tornado',],
 )

@@ -27,44 +27,44 @@ import datetime
 repo = {}
 
 class Document(complextypes.ComplexType):
-	number = int 
-	theme = str
-	author = str
-	text = str
-	created = datetime.date
+    number = int
+    theme = str
+    author = str
+    text = str
+    created = datetime.date
 
 class Message(complextypes.ComplexType):
-	doc = Document
-	msg = str
+    doc = Document
+    msg = str
 
 class Repository(soaphandler.SoapHandler):
-	""" Service of repository, store documents (Document)  """
-	@webservice(_params=Message,_returns=str)
-	def save(self, msg):
-		global repo
-		repo[msg.doc.number] = msg.doc
-		return 'Save document number : %d'%msg.doc.number 
+    """ Service of repository, store documents (Document)  """
+    @webservice(_params=Message,_returns=str)
+    def save(self, msg):
+        global repo
+        repo[msg.doc.number] = msg.doc
+        return 'Save document number : %d'%msg.doc.number
 
-	@webservice(_params=int,_returns=Message)
-	def find(self, num):
-		global repo
-		response = Message()
-		try:
-			doc = Document()
-			d = repo[num]
-			doc.number = d.number
-			doc.theme = d.theme
-			doc.author = d.author
-			doc.text = d.text
-			doc.created = d.created
-			response.doc = doc
-			response.msg = 'OK'
-		except:
-			response.doc = Document()
-			response.msg = 'Document number %d dont exist'%num
-		return response
+    @webservice(_params=int,_returns=Message)
+    def find(self, num):
+        global repo
+        response = Message()
+        try:
+            doc = Document()
+            d = repo[num]
+            doc.number = d.number
+            doc.theme = d.theme
+            doc.author = d.author
+            doc.text = d.text
+            doc.created = d.created
+            response.doc = doc
+            response.msg = 'OK'
+        except:
+            response.doc = Document()
+            response.msg = 'Document number %d dont exist'%num
+        return response
 
 if __name__ == '__main__':
-  	service = [('RepositoryService',Repository)]
-  	app = webservices.WebService(service).listen(8080)
-  	tornado.ioloop.IOLoop.instance().start()
+      service = [('RepositoryService',Repository)]
+      app = webservices.WebService(service).listen(8080)
+      tornado.ioloop.IOLoop.instance().start()
