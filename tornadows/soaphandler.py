@@ -77,13 +77,13 @@ def webservice(*params,**kwparams):
 		operation._operation = f.__name__
 		operation._inputArray = _inputArray
 		operation._outputArray = _outputArray
-		
+
 		return operation
 	return method
 
 def soapfault(faultstring):
 	""" Method for generate a soap fault
-	    soapfault() return a SoapMessage() object with a message 
+	    soapfault() return a SoapMessage() object with a message
 	    for Soap Envelope
 	 """
 	fault = soap.SoapMessage()
@@ -95,7 +95,7 @@ def soapfault(faultstring):
 	return fault
 
 class SoapHandler(tornado.web.RequestHandler):
-	""" This subclass extends tornado.web.RequestHandler class, defining the 
+	""" This subclass extends tornado.web.RequestHandler class, defining the
 	    methods get() and post() for handle a soap message (request and response).
 	"""
 	def get(self):
@@ -106,7 +106,7 @@ class SoapHandler(tornado.web.RequestHandler):
 			address = options.wsdl_hostname
 		else:
 			address = getattr(self, 'targetns_address',tornado.httpserver.socket.gethostbyname(tornado.httpserver.socket.gethostname()))
-		
+
 		port = 80 # if you are using the port 80
 		if len(self.request.headers['Host'].split(':')) >= 2:
 			port = self.request.headers['Host'].split(':')[1]
@@ -165,15 +165,14 @@ class SoapHandler(tornado.web.RequestHandler):
 				if callable(operation) and hasattr(operation,'_is_operation'):
 					num_methods = self._countOperations()
 					if hasattr(operation,'_operation') and soapaction.endswith(getattr(operation,'_operation')) and num_methods > 1:
-						method = getattr(operation,'_operation') 
+						method = getattr(operation,'_operation')
 						self._executeOperation(operation, done, method=method)
 						break
 					elif num_methods == 1:
 						self._executeOperation(operation, done, method='')
 						break
 		except Exception as detail:
-			fault = soapfault('Error in web service : %s'%detail)
-			self.write(fault.getSoap().toxml())
+			done(soapfault('Error in web service : %s'%detail))
 
 	def _countOperations(self):
 		""" Private method that counts the operations on the web services """
@@ -181,7 +180,7 @@ class SoapHandler(tornado.web.RequestHandler):
 		for operations in dir(self):
 			operation = getattr(self,operations)
 			if callable(operation) and hasattr(operation,'_is_operation'):
-				c += 1	
+				c += 1
 		return c
 
 	def _executeOperation(self, operation, callback, method=''):
@@ -211,7 +210,7 @@ class SoapHandler(tornado.web.RequestHandler):
 			else:
 				res = self._createReturns(response,is_array)
 			callback(res)
-	
+
 		if isinstance(response, tornado.concurrent.Future):
 			response.add_done_callback(lambda p: done(response.result))
 		else:
@@ -227,13 +226,13 @@ class SoapHandler(tornado.web.RequestHandler):
 		document = xml.dom.minidom.parseString(xmldoc)
 		prefix = document.documentElement.prefix
 		namespace = document.documentElement.namespaceURI
-		
+
 		header = self._getElementFromMessage('Header',document)
 		body   = self._getElementFromMessage('Body',document)
 
 		header_elements = self._parseXML(header)
 		body_elements = self._parseXML(body)
-		
+
 		soapMsg = soap.SoapMessage()
 		for h in header_elements:
 			soapMsg.setHeader(h)
@@ -250,8 +249,8 @@ class SoapHandler(tornado.web.RequestHandler):
 		return list_of_elements
 
 	def _parseXML(self,elements):
-		""" Private method parse and digest the xml.dom.minidom.Element 
-		    finding the childs of Header and Body from soap message. 
+		""" Private method parse and digest the xml.dom.minidom.Element
+		    finding the childs of Header and Body from soap message.
 		    Return a list object with all of child Elements.
 		"""
 		elem_list = []
@@ -280,7 +279,7 @@ class SoapHandler(tornado.web.RequestHandler):
 		obj = complextypes.xml2object(xmld.toxml(),xsd,complex,method=method)
 
 		return obj
-	
+
 	def _parseParams(self,elements,types=None,args=None):
 		""" Private method to parse a Body element of SOAP Envelope and extract
 		    the values of the request document like parameters for the soapmethod,
@@ -290,7 +289,7 @@ class SoapHandler(tornado.web.RequestHandler):
 		for tagname in args:
 			type = types[tagname]
 			values += self._findValues(tagname,type,elements)
-		return values		
+		return values
 
 	def _findValues(self,name,type,xml):
 		""" Private method to find the values of elements in the XML of input """
@@ -309,17 +308,17 @@ class SoapHandler(tornado.web.RequestHandler):
 		return values
 
 	def _createReturnsComplexType(self,result,method=''):
-		""" Private method to generate the xml document with the response. 
+		""" Private method to generate the xml document with the response.
 		    Return an SoapMessage() with XML document.
 		"""
 		response = xml.dom.minidom.parseString(result.toXML(method=method))
-		
+
 		soapResponse = soap.SoapMessage()
 		soapResponse.setBody(response)
 		return soapResponse
-			
+
 	def _createReturns(self,result,is_array):
-		""" Private method to generate the xml document with the response. 
+		""" Private method to generate the xml document with the response.
 		    Return an SoapMessage().
 		"""
 		xmlresponse = ''
@@ -335,7 +334,7 @@ class SoapHandler(tornado.web.RequestHandler):
 			xmlresponse += '</returns>\n'
 		else:
 			xmlresponse = '<returns>%s</returns>\n'%str(result)
-	
+
 		response = xml.dom.minidom.parseString(xmlresponse)
 
 		soapResponse = soap.SoapMessage()
