@@ -26,7 +26,7 @@ class HelloWorldAsyncService(soaphandler.SoapHandler):
     """ Async service that returns 'Hello World!!!' """
 
     @tornado.gen.coroutine
-    @webservice(_params=None,_returns=xmltypes.String)
+    @webservice(_params=None, _returns=xmltypes.String)
     def sayHello(self):
         raise tornado.gen.Return('Hello World!!!')
 

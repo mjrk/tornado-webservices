@@ -33,20 +33,20 @@ class WebService(tornado.web.Application):
         from tornadows.soaphandler import webservice
 
         class MyService(soaphandler.SoapHandler):
-            @webservice(_params=[xmltypes.Integer, xmltypes.Integer],_returns=xmltypes.Integer)
+            @webservice(_params=[xmltypes.Integer, xmltypes.Integer], _returns=xmltypes.Integer)
             def sum(self, value1, value2):
                 result = value1 + value2
 
                 return result
 
         if __name__ == "__main__":
-            app = webservices.WebService("MyService",MyService)
+            app = webservices.WebService("MyService", MyService)
             ws_server = tornado.httpserver.HTTPServer(app)
             ws_server.listen(8080)
             tornado.ioloop.IOLoop.instance().start()
 
     """
-    def __init__(self,services,object=None,wsdl=None):
+    def __init__(self, services, object=None, wsdl=None):
         """ Initializes the application for web services
 
             Instances of this class are callable and can be passed to
@@ -56,20 +56,20 @@ class WebService(tornado.web.Application):
             service (service), the class with the web service (object)
             and wsdl with the wsdl file path (if this exist).
          """
-        if isinstance(services,list) and object == None:
+        if isinstance(services, list) and object == None:
             srvs = []
             for s in services:
                 srv = s[0]
                 obj = s[1]
-                srvs.append((r"/"+str(srv),obj))
-                srvs.append((r"/"+str(srv)+"/",obj))
-            tornado.web.Application.__init__(self,srvs)
+                srvs.append((r"/"+str(srv), obj))
+                srvs.append((r"/"+str(srv)+"/", obj))
+            tornado.web.Application.__init__(self, srvs)
         else:
             self._service = services
             self._object = object
-            self._services = [(r"/"+str(self._service),self._object),
-                      (r"/"+str(self._service)+"/",self._object),]
-            tornado.web.Application.__init__(self,self._services)
+            self._services = [(r"/"+str(self._service), self._object),
+                      (r"/"+str(self._service)+"/", self._object),]
+            tornado.web.Application.__init__(self, self._services)
 
 
 class WSGIWebService(tornado.wsgi.WSGIApplication):
@@ -84,18 +84,18 @@ class WSGIWebService(tornado.wsgi.WSGIApplication):
         import wsgiref.simple_server
 
         class MyService(soaphandler.SoapHandler):
-            @webservice(_params=[xmltypes.Integer, xmltypes.Integer],_returns=xmltypes.Integer)
+            @webservice(_params=[xmltypes.Integer, xmltypes.Integer], _returns=xmltypes.Integer)
             def sum(self, value1, value2):
                 result = value1 + value2
 
                 return result
 
         if __name__ == "__main__":
-            app = webservices.WSGIWebService("MyService",MyService)
-            server = wsgiref.simple_server.make_server('',8888,app)
+            app = webservices.WSGIWebService("MyService", MyService)
+            server = wsgiref.simple_server.make_server('', 8888, app)
             server.serve_forever()
     """
-    def __init__(self,services,object=None,wsdl=None, default_host="", **settings):
+    def __init__(self, services, object=None, wsdl=None, default_host="", **settings):
         """ Initializes the application for web services
 
             Instances of this class are callable and can be passed to
@@ -105,17 +105,17 @@ class WSGIWebService(tornado.wsgi.WSGIApplication):
             service (service), the class with the web service (object)
             and wsdl with the wsdl file path (if this exist).
          """
-        if isinstance(services,list) and object == None:
+        if isinstance(services, list) and object == None:
             srvs = []
             for s in services:
                 srv = s[0]
                 obj = s[1]
-                srvs.append((r"/"+str(srv),obj))
-                srvs.append((r"/"+str(srv)+"/",obj))
-            tornado.wsgi.WSGIApplication.__init__(self,srvs,default_host, **settings)
+                srvs.append((r"/"+str(srv), obj))
+                srvs.append((r"/"+str(srv)+"/", obj))
+            tornado.wsgi.WSGIApplication.__init__(self, srvs, default_host, **settings)
         else:
             self._service = services
             self._object = object
-            self._services = [(r"/"+str(self._service),self._object),
-                      (r"/"+str(self._service)+"/",self._object),]
-            tornado.wsgi.WSGIApplication.__init__(self,self._services,default_host, **settings)
+            self._services = [(r"/"+str(self._service), self._object),
+                      (r"/"+str(self._service)+"/", self._object),]
+            tornado.wsgi.WSGIApplication.__init__(self, self._services, default_host, **settings)

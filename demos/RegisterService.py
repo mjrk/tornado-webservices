@@ -63,7 +63,7 @@ class RegisterService(soaphandler.SoapHandler):
         return response
 
 if __name__ == '__main__':
-    service = [('RegisterService',RegisterService)]
+    service = [('RegisterService', RegisterService)]
     app = webservices.WebService(service)
     app.listen(8080)
     tornado.ioloop.IOLoop.instance().start()

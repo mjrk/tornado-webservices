@@ -25,12 +25,12 @@ from tornadows.soaphandler import webservice
 class HelloWorldService2(soaphandler.SoapHandler):
     """ Service that return an list with Hello and World str elements, not uses input parameters """
 
-    @webservice(_params=None,_returns=xmltypes.Array(xmltypes.String))
+    @webservice(_params=None, _returns=xmltypes.Array(xmltypes.String))
     def sayHello(self):
-        return ["Hello","World"]
+        return ["Hello", "World"]
 
 if __name__ == '__main__':
-      service = [('HelloWorldService2',HelloWorldService2)]
+      service = [('HelloWorldService2', HelloWorldService2)]
       app = webservices.WebService(service)
       ws = tornado.httpserver.HTTPServer(app)
       ws.listen(8080)

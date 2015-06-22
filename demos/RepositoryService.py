@@ -43,13 +43,13 @@ class Message(complextypes.ComplexType):
 class Repository(soaphandler.SoapHandler):
     """ Service of repository, store documents (Document)  """
 
-    @webservice(_params=Message,_returns=str)
+    @webservice(_params=Message, _returns=str)
     def save(self, msg):
         global repo
         repo[msg.doc.number] = msg.doc
         return 'Save document number : %d' % msg.doc.number
 
-    @webservice(_params=int,_returns=Message)
+    @webservice(_params=int, _returns=Message)
     def find(self, num):
         global repo
         response = Message()
@@ -69,6 +69,6 @@ class Repository(soaphandler.SoapHandler):
         return response
 
 if __name__ == '__main__':
-      service = [('RepositoryService',Repository)]
+      service = [('RepositoryService', Repository)]
       app = webservices.WebService(service).listen(8080)
       tornado.ioloop.IOLoop.instance().start()

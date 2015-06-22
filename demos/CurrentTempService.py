@@ -25,13 +25,13 @@ from tornadows.soaphandler import webservice
 class CurrentTempService(soaphandler.SoapHandler):
     """ Service that return the current temperature, not uses input parameters """
 
-    @webservice(_params=None,_returns=xmltypes.Integer)
+    @webservice(_params=None, _returns=xmltypes.Integer)
     def getCurrentTemperature(self):
           c = 29
           return c
 
 if __name__ == '__main__':
-    service = [('CurrentTempService',CurrentTempService)]
+    service = [('CurrentTempService', CurrentTempService)]
     app = webservices.WebService(service)
     ws = tornado.httpserver.HTTPServer(app)
     ws.listen(8080)

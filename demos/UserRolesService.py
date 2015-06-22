@@ -47,11 +47,11 @@ class ListOfUser(complextypes.ComplexType):
 
 class UserRolesService(soaphandler.SoapHandler):
 
-    @webservice(_params=xmltypes.Integer,_returns=ListOfUser)
+    @webservice(_params=xmltypes.Integer, _returns=ListOfUser)
     def getUsers(self, idlist):
         user1 = User()
         user1.username = 'steve'
-        user1.roles = ['ceo','admin']
+        user1.roles = ['ceo', 'admin']
 
         user2 = User()
         user2.username = 'billy'
@@ -64,7 +64,7 @@ class UserRolesService(soaphandler.SoapHandler):
         return listusers
 
 if __name__ == '__main__':
-    service = [('UserRolesService',UserRolesService)]
+    service = [('UserRolesService', UserRolesService)]
     app = webservices.WebService(service)
     ws = tornado.httpserver.HTTPServer(app)
     ws.listen(8080)

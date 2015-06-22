@@ -25,7 +25,7 @@ from tornadows.soaphandler import webservice
 class EchoService(soaphandler.SoapHandler):
     """ Echo Service """
 
-    @webservice(_params=str,_returns=str)
+    @webservice(_params=str, _returns=str)
     def echo(self, message):
         return 'Echo say : %s' % message
 
@@ -42,7 +42,7 @@ class EchoTargetnsService(soaphandler.SoapHandler):
 class CountService(soaphandler.SoapHandler):
     """ Service that counts the number of items in a list """
 
-    @webservice(_params=xmltypes.Array(str),_returns=int)
+    @webservice(_params=xmltypes.Array(str), _returns=int)
     def count(self, list_of_values):
         length = len(list_of_values)
         return length
@@ -51,7 +51,7 @@ class CountService(soaphandler.SoapHandler):
 class DivService(soaphandler.SoapHandler):
     """ Service that provides the division operation of two float numbers """
 
-    @webservice(_params=[float,float],_returns=float)
+    @webservice(_params=[float, float], _returns=float)
     def div(self, a, b):
         result = a/b
         return result
@@ -60,8 +60,8 @@ class DivService(soaphandler.SoapHandler):
 class FibonacciService(soaphandler.SoapHandler):
     """ Service that provides Fibonacci numbers """
 
-    @webservice(_params=int,_returns=xmltypes.Array(int))
-    def fib(self,n):
+    @webservice(_params=int, _returns=xmltypes.Array(int))
+    def fib(self, n):
         a, b = 0, 1
         result = []
         while b < n:
@@ -70,11 +70,11 @@ class FibonacciService(soaphandler.SoapHandler):
         return result
 
 if __name__ == '__main__':
-      service = [('EchoService',EchoService),
+      service = [('EchoService', EchoService),
                ('EchoTargetnsService', EchoTargetnsService),
-               ('CountService',CountService),
-               ('DivService',DivService),
-               ('FibonacciService',FibonacciService)]
+               ('CountService', CountService),
+               ('DivService', DivService),
+               ('FibonacciService', FibonacciService)]
       app = webservices.WebService(service)
       ws = tornado.httpserver.HTTPServer(app)
       ws.listen(8080)

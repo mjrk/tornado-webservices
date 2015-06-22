@@ -126,26 +126,26 @@ class BooleanProperty(Property):
 class ArrayProperty(list):
     """ For create a list of classes """
     def __init__(self, object, minOccurs = 1, maxOccurs=None, data=[]):
-        list.__init__(self,data)
+        list.__init__(self, data)
         self._minOccurs = minOccurs
         self._maxOccurs = maxOccurs
         self._object = object
         self.append(self._object)
 
-    def toXSD(self,namespace='xsd',nameelement=None):
+    def toXSD(self, namespace='xsd', nameelement=None):
         """ Create xml complex type for ArrayProperty """
         xsd = self._object.toXSD()
         if self._maxOccurs == None:
-            xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s"/>' % (namespace,nameelement,self._object.getName(),self._minOccurs)
+            xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s"/>' % (namespace, nameelement, self._object.getName(), self._minOccurs)
         elif self._maxOccurs != None:
-            xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s" maxOccurs="%s"/>' % (namespace,nameelement,self._object.getName(),str(self._minOccurs),str(self._maxOccurs))
+            xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s" maxOccurs="%s"/>' % (namespace, nameelement, self._object.getName(), str(self._minOccurs), str(self._maxOccurs))
         return xsd
 
 
 class ComplexType(object):
     """ Base class for definitions of python class like xml document and schema:
 
-        from tornadows.complextypes import ComplexType,StringProperty, IntegerProperty
+        from tornadows.complextypes import ComplexType, StringProperty, IntegerProperty
 
         class Person(ComplexType):
         name = StringProperty
@@ -184,16 +184,16 @@ class ComplexType(object):
     """
     def __init__(self):
         """ Class constructor for ComplexType """
-        default_attr = dir(type('default',(object,),{}))
+        default_attr = dir(type('default', (object,), {}))
         for attr in self.__class__.__dict__.keys():
             if default_attr.count(attr) > 0 or callable(attr):
                 continue
             else:
                 element = self.__class__.__dict__[attr]
                 typeobj = self._createAttributeType(element)
-                setattr(self,attr,typeobj)
+                setattr(self, attr, typeobj)
 
-    def toXML(self,name=None,method=''):
+    def toXML(self, name=None, method=''):
         """ Method that creates the XML document for the instance of python class.
             Return a string with the xml document.
          """
@@ -206,30 +206,30 @@ class ComplexType(object):
         nameroot += method
 
         xml = '<%s>' % nameroot
-        default_attr = dir(type('default',(object,),{}))
+        default_attr = dir(type('default', (object,), {}))
         for key in dir(self):
             if default_attr.count(key) > 0:
                 continue
-            element = findElementFromDict(self.__dict__,key)
+            element = findElementFromDict(self.__dict__, key)
             if element == None:
                 continue
-            if isinstance(element,list):
+            if isinstance(element, list):
                 for e in element:
-                    if isinstance(e,ComplexType):
+                    if isinstance(e, ComplexType):
                         xml += e.toXML(name=key)
                     else:
-                        xml += '<%s>%s</%s>' % (key,e,key)
-            elif isinstance(element,Property):
-                xml += '<%s>%s</%s>' % (key,element.value,key)
-            elif isinstance(element,ComplexType):
+                        xml += '<%s>%s</%s>' % (key, e, key)
+            elif isinstance(element, Property):
+                xml += '<%s>%s</%s>' % (key, element.value, key)
+            elif isinstance(element, ComplexType):
                 xml += element.toXML(name=key)
             else:
-                xml += '<%s>%s</%s>' % (key,convert(type(element).__name__,element),key)
+                xml += '<%s>%s</%s>' % (key, convert(type(element).__name__, element), key)
         xml += '</%s>' % nameroot
         return str(xml)
 
     @classmethod
-    def toXSD(cls,xmlns='http://www.w3.org/2001/XMLSchema',namespace='xsd',method='', ltype=[]):
+    def toXSD(cls, xmlns='http://www.w3.org/2001/XMLSchema', namespace='xsd', method='', ltype=[]):
         """ Class method that creates the XSD document for the python class.
             Return a string with the xml schema.
          """
@@ -238,63 +238,63 @@ class ComplexType(object):
         return xsd
 
     @classmethod
-    def _generateXSD(cls,xmlns='http://www.w3.org/2001/XMLSchema',namespace='xsd', ltype=[]):
+    def _generateXSD(cls, xmlns='http://www.w3.org/2001/XMLSchema', namespace='xsd', ltype=[]):
         """ Class method for get the xml schema with the document definition.
             Return a string with the xsd document.
          """
-        default_attr = dir(type('default',(object,),{}))
+        default_attr = dir(type('default', (object,), {}))
         name = cls.__name__
-        xsd = '<%s:complexType name="%s" xmlns:%s="%s">' % (namespace,name,namespace,xmlns)
+        xsd = '<%s:complexType name="%s" xmlns:%s="%s">' % (namespace, name, namespace, xmlns)
         xsd += '<%s:sequence>' % namespace
         complextype = []
 
         for key in dir(cls):
             if default_attr.count(key) > 0:
                 continue
-            element = findElementFromDict(cls.__dict__,key)
+            element = findElementFromDict(cls.__dict__, key)
             if element == None:
                 continue
-            if isinstance(element,Property):
+            if isinstance(element, Property):
                 xsd += element.type.createElement(str(key))
 
-            elif isinstance(element,ComplexType):
+            elif isinstance(element, ComplexType):
                 nameinstance = key
 
                 if ltype.count(self._elementInput.getName()) == 0:
                     ltype.append(self._elementInput.getName())
                     complextype.append(element._generateXSD(ltype=[]))
 
-                xsd += '<%s:element name="%s" type="tns:%s"/>' % (namespace,nameinstance,element.getName())
-            elif inspect.isclass(element) and issubclass(element,ComplexType):
+                xsd += '<%s:element name="%s" type="tns:%s"/>' % (namespace, nameinstance, element.getName())
+            elif inspect.isclass(element) and issubclass(element, ComplexType):
                 nameinstance = key
 
                 if ltype.count(element.getName()) == 0:
                     ltype.append(element.getName())
                     complextype.append(element._generateXSD(ltype=[]))
 
-                xsd += '<%s:element name="%s" type="tns:%s"/>' % (namespace,nameinstance,element.getName())
-            elif isinstance(element,ArrayProperty):
-                if isinstance(element[0],ComplexType) or issubclass(element[0],ComplexType):
+                xsd += '<%s:element name="%s" type="tns:%s"/>' % (namespace, nameinstance, element.getName())
+            elif isinstance(element, ArrayProperty):
+                if isinstance(element[0], ComplexType) or issubclass(element[0], ComplexType):
                     complextype.append(element[0]._generateXSD(ltype=[]))
-                    xsd += '<%s:element name="%s" type="tns:%s" maxOccurs="unbounded"/>' % (namespace,key,element[0].__name__)
+                    xsd += '<%s:element name="%s" type="tns:%s" maxOccurs="unbounded"/>' % (namespace, key, element[0].__name__)
                 else:
                     typeelement = createPythonType2XMLType(element[0].__name__)
-                    xsd += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>' % (namespace,key,namespace,typeelement)
+                    xsd += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>' % (namespace, key, namespace, typeelement)
 
-            elif isinstance(element,list):
-                if isinstance(element[0],ComplexType) or issubclass(element[0],ComplexType):
+            elif isinstance(element, list):
+                if isinstance(element[0], ComplexType) or issubclass(element[0], ComplexType):
 
                     if ltype.count(element[0].__name__) == 0:
                         ltype.append(element[0].__name__)
                         complextype.append(element[0]._generateXSD(ltype=[]))
 
-                    xsd += '<%s:element name="%s" type="tns:%s" maxOccurs="unbounded"/>' % (namespace,key,element[0].__name__)
+                    xsd += '<%s:element name="%s" type="tns:%s" maxOccurs="unbounded"/>' % (namespace, key, element[0].__name__)
                 else:
                     typeelement = createPythonType2XMLType(element[0].__name__)
-                    xsd += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>' % (namespace,key,namespace,typeelement)
-            elif hasattr(element,'__name__'):
+                    xsd += '<%s:element name="%s" type="%s:%s" maxOccurs="unbounded"/>' % (namespace, key, namespace, typeelement)
+            elif hasattr(element, '__name__'):
                 typeelement = createPythonType2XMLType(element.__name__)
-                xsd += '<%s:element name="%s" type="%s:%s"/>' % (namespace,str(key),namespace,typeelement)
+                xsd += '<%s:element name="%s" type="%s:%s"/>' % (namespace, str(key), namespace, typeelement)
 
         xsd += '</%s:sequence>' % namespace
         xsd += '</%s:complexType>' % namespace
@@ -311,31 +311,31 @@ class ComplexType(object):
         return cls.__name__
 
     @classmethod
-    def _createAttributeType(self,element):
+    def _createAttributeType(self, element):
         """ Class method to create the types of the attributes of a ComplexType """
-        if isinstance(element,list):
+        if isinstance(element, list):
             return list()
-        elif isinstance(element,IntegerProperty):
+        elif isinstance(element, IntegerProperty):
             return IntegerProperty()
-        elif isinstance(element,DecimalProperty):
+        elif isinstance(element, DecimalProperty):
             return DecimalProperty()
-        elif isinstance(element,DoubleProperty):
+        elif isinstance(element, DoubleProperty):
             return DoubleProperty()
-        elif isinstance(element,FloatProperty):
+        elif isinstance(element, FloatProperty):
             return FloatProperty()
-        elif isinstance(element,DurationProperty):
+        elif isinstance(element, DurationProperty):
             return DurationProperty()
-        elif isinstance(element,DateProperty):
+        elif isinstance(element, DateProperty):
             return DateProperty()
-        elif isinstance(element,TimeProperty):
+        elif isinstance(element, TimeProperty):
             return TimeProperty()
-        elif isinstance(element,DateTimeProperty):
+        elif isinstance(element, DateTimeProperty):
             return DateTimeProperty()
-        elif isinstance(element,StringProperty):
+        elif isinstance(element, StringProperty):
             return StringProperty()
-        elif isinstance(element,BooleanProperty):
+        elif isinstance(element, BooleanProperty):
             return BooleanProperty()
-        elif issubclass(element,ComplexType):
+        elif issubclass(element, ComplexType):
             return element()
         else:
             if   element.__name__ == 'int':
@@ -359,31 +359,31 @@ class ComplexType(object):
             elif element.__name__ == 'bool':
                 return bool
 
-def xml2object(xml,xsd,complex,method=''):
+def xml2object(xml, xsd, complex, method=''):
     """ Function that converts a XML document in a instance of a python class """
     namecls = complex.getName()
     types = xsd2dict(xsd)
-    lst = xml2list(xml,namecls,types,method=method)
+    lst = xml2list(xml, namecls, types, method=method)
     tps = cls2dict(complex)
-    obj = generateOBJ(lst,namecls,tps)
+    obj = generateOBJ(lst, namecls, tps)
     return obj
 
 def cls2dict(complex):
     """ Function that creates a dictionary from a ComplexType class with the attributes and types """
-    default_attr = dir(type('default',(object,),{}))
+    default_attr = dir(type('default', (object,), {}))
     dct = {}
     for attr in dir(complex):
         if default_attr.count(attr) > 0 or callable(attr):
             continue
         else:
-            elem = findElementFromDict(complex.__dict__,attr)
+            elem = findElementFromDict(complex.__dict__, attr)
             if elem != None:
                 dct[attr] = elem
     return dct
 
-def xsd2dict(xsd,namespace='xsd'):
+def xsd2dict(xsd, namespace='xsd'):
     """ Function that creates a dictionary from a xml schema with the type of element """
-    types = ['xsd:integer','xsd:decimal','xsd:double','xsd:float','xsd:duration','xsd:date','xsd:time','xsd:dateTime','xsd:string','xsd:boolean']
+    types = ['xsd:integer', 'xsd:decimal', 'xsd:double', 'xsd:float', 'xsd:duration', 'xsd:date', 'xsd:time', 'xsd:dateTime', 'xsd:string', 'xsd:boolean']
     dct = {}
 
     element = '%s:element' % namespace
@@ -394,10 +394,10 @@ def xsd2dict(xsd,namespace='xsd'):
         lst = e.hasAttribute('maxOccurs')
         if types.count(typ) > 0:
             val = 'element'
-        dct[str(e.getAttribute('name'))] = (val,typ,lst)
+        dct[str(e.getAttribute('name'))] = (val, typ, lst)
     return dct
 
-def xml2list(xmldoc,name,types,method=''):
+def xml2list(xmldoc, name, types, method=''):
     """ Function that creates a list from xml documento with a tuple element and value """
     name = name+method
 
@@ -415,21 +415,21 @@ def xml2list(xmldoc,name,types,method=''):
         typxml = t[1]
         isarray = t[2]
         if typ == 'complexType' or typ == 'list':
-            l = xml2list(a.toxml(),str(a.nodeName),types)
-            lst.append((str(a.nodeName),l,isarray))
+            l = xml2list(a.toxml(), str(a.nodeName), types)
+            lst.append((str(a.nodeName), l, isarray))
         else:
             val = None
             if len(a.childNodes) > 0:
-                val = convert(typxml,str(a.childNodes[0].nodeValue))
+                val = convert(typxml, str(a.childNodes[0].nodeValue))
                 # Convert str to bool.
                 if val == 'true':
                     val = True
                 elif val == 'false':
                     val = False
-            lst.append((str(a.nodeName),val,isarray))
+            lst.append((str(a.nodeName), val, isarray))
     return lst
 
-def generateOBJ(d,namecls,types):
+def generateOBJ(d, namecls, types):
     """ Function that creates a object from a xml document """
     dct = {}
     lst = []
@@ -437,52 +437,52 @@ def generateOBJ(d,namecls,types):
         name = a[0]
         value = a[1]
         isarray = a[2]
-        if isinstance(value,list):
-            o = generateOBJ(value,name,types)
+        if isinstance(value, list):
+            o = generateOBJ(value, name, types)
             if isarray:
                 lst.append(o)
                 dct[name] = lst
             else:
                 dct[name] = o
         else:
-            typ = findElementFromDict(types,name)
-            if isinstance(typ,Property):
-                dct[name] = createProperty(typ,value)
+            typ = findElementFromDict(types, name)
+            if isinstance(typ, Property):
+                dct[name] = createProperty(typ, value)
             else:
                 dct[name] = value
-    return type(namecls,(ComplexType,),dct)
+    return type(namecls, (ComplexType,), dct)
 
-def createProperty(typ,value):
+def createProperty(typ, value):
     """ Function that creates a Property class instance, with the value """
     ct = None
-    if isinstance(typ,IntegerProperty):
+    if isinstance(typ, IntegerProperty):
         ct = IntegerProperty()
         ct.value = tornadows.xmltypes.Integer.genType(value)
-    elif isinstance(typ,DecimalProperty):
+    elif isinstance(typ, DecimalProperty):
         ct = DecimalProperty()
         ct.value = tornadows.xmltypes.Decimal.genType(value)
-    elif isinstance(typ,DoubleProperty):
+    elif isinstance(typ, DoubleProperty):
         ct = DoubleProperty()
         ct.value = tornadows.xmltypes.Double.genType(value)
-    elif isinstance(typ,FloatProperty):
+    elif isinstance(typ, FloatProperty):
         ct = FloatProperty()
         ct.value = tornadows.xmltypes.Float.genType(value)
-    elif isinstance(typ,DurationProperty):
+    elif isinstance(typ, DurationProperty):
         ct = DurationProperty()
         ct.value = tornadows.xmltypes.Duration.genType(value)
-    elif isinstance(typ,DateProperty):
+    elif isinstance(typ, DateProperty):
         ct = DateProperty()
         ct.value = tornadows.xmltypes.Date.genType(value)
-    elif isinstance(typ,TimeProperty):
+    elif isinstance(typ, TimeProperty):
         ct = TimeProperty()
         ct.value = tornadows.xmltypes.Time.genType(value)
-    elif isinstance(typ,DateTimeProperty):
+    elif isinstance(typ, DateTimeProperty):
         ct = DateTimeProperty()
         ct.value = tornadows.xmltypes.DateTime.genType(value)
-    elif isinstance(typ,StringProperty):
+    elif isinstance(typ, StringProperty):
         ct = StringProperty()
         ct.value = tornadows.xmltypes.String.genType(value)
-    elif isinstance(typ,BooleanProperty):
+    elif isinstance(typ, BooleanProperty):
         ct = BooleanProperty()
         ct.value = tornadows.xmltypes.Boolean.genType(value)
 
@@ -496,7 +496,7 @@ def genattr(elems):
             d.append(e)
     return d
 
-def findElementFromDict(dictionary,key):
+def findElementFromDict(dictionary, key):
     """ Function to find a element into a dictionary for the key """
     element = None
     try:
@@ -505,7 +505,7 @@ def findElementFromDict(dictionary,key):
     except KeyError:
         return None
 
-def convert(typeelement,value):
+def convert(typeelement, value):
     """ Function that converts a value depending his type """
     if typeelement == 'xsd:integer' or typeelement == 'int':
         return int(value)
@@ -519,7 +519,7 @@ def convert(typeelement,value):
         return str(value)
     elif typeelement == 'xsd:date' or typeelement == 'date':
         sdate = str(value).split('-')
-        return date(int(sdate[0]),int(sdate[1]),int(sdate[2]))
+        return date(int(sdate[0]), int(sdate[1]), int(sdate[2]))
     elif typeelement == 'xsd:time' or typeelement == 'time':
         stime = str(value).split(':')
         hour = stime[0]
@@ -527,9 +527,9 @@ def convert(typeelement,value):
         seg = '00'
         if len(stime) >= 3:
             seg = stime[2].split('.')[0]
-        return time(int(hour),int(min),int(seg))
+        return time(int(hour), int(min), int(seg))
     elif typeelement == 'xsd:dateTime' or typeelement == 'datetime':
-        sdatetime = str(value).replace('T','-').replace(' ','-').replace('+','-').split('-')
+        sdatetime = str(value).replace('T', '-').replace(' ', '-').replace('+', '-').split('-')
         year = sdatetime[0]
         mon = sdatetime[1]
         day = sdatetime[2]
@@ -539,7 +539,7 @@ def convert(typeelement,value):
         seg = '00'
         if len(stime) >= 3:
             seg = stime[2].split('.')[0]
-        return datetime(int(year),int(mon),int(day),int(hour),int(min),int(seg)).isoformat('T')
+        return datetime(int(year), int(mon), int(day), int(hour), int(min), int(seg)).isoformat('T')
     elif typeelement == 'xsd:string' or typeelement == 'str' or typeelement == 'unicode':
         return str(value)
     elif typeelement == 'xsd:boolean' or typeelement == 'bool':

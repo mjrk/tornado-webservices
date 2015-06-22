@@ -69,19 +69,19 @@ class SoapMessage:
         """ Set the child content to Header element
             setHeader(header), header is a xml.dom.minidom.Document object
          """
-        if isinstance(header,xml.dom.minidom.Document):
+        if isinstance(header, xml.dom.minidom.Document):
             self._header.appendChild(header.documentElement)
-        elif isinstance(header,xml.dom.minidom.Element):
+        elif isinstance(header, xml.dom.minidom.Element):
             self._header.appendChild(header)
 
-    def setBody(self,body):
+    def setBody(self, body):
         """ Set the child content to Body element
             setBody(body), body is a xml.dom.minidom.Document object or
             a xml.dom.minidom.Element
         """
-        if isinstance(body,xml.dom.minidom.Document):
+        if isinstance(body, xml.dom.minidom.Document):
             self._body.appendChild(body.documentElement)
-        elif isinstance(body,xml.dom.minidom.Element):
+        elif isinstance(body, xml.dom.minidom.Element):
             self._body.appendChild(body)
 
     def removeHeader(self):

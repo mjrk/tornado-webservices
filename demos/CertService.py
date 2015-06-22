@@ -52,14 +52,14 @@ class CertService(soaphandler.SoapHandler):
         cert.numcert = 1
         cert.idperson = idperson
         cert.nameperson = 'Steve J'
-        cert.birthday = datetime.date(1973,12,11)
+        cert.birthday = datetime.date(1973, 12, 11)
         cert.datetimecert = datetime.datetime.now()
         cert.isvalid = True
 
         return cert
 
 if __name__ == '__main__':
-    service = [('CertService',CertService)]
+    service = [('CertService', CertService)]
     app = webservices.WebService(service)
     app.listen(8080)
     tornado.ioloop.IOLoop.instance().start()

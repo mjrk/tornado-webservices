@@ -54,7 +54,7 @@ class Product(complextypes.ComplexType):
 
 class ProductService(soaphandler.SoapHandler):
 
-    @webservice(_params=Input,_returns=Product)
+    @webservice(_params=Input, _returns=Product)
     def getProduct(self, input):
         id = input.idProduct.value
 
@@ -69,17 +69,17 @@ class ProductService(soaphandler.SoapHandler):
 
         return output
 
-    def database(self,id):
+    def database(self, id):
         """ This method simulates a database of products """
-        db = {1:('COMPUTER',1000.5,100),
-               2:('MOUSE',10.0,300),
-              3:('PENCIL BLUE',0.50,500),
-              4:('PENCIL RED',0.50,600),
-              5:('PENCIL WHITE',0.50,900),
-              6:('HEADPHONES',15.7,500),
-              7:(u'Japanses Noodles (ラーメン)',1.1,500),
+        db = {1:('COMPUTER', 1000.5, 100),
+               2:('MOUSE', 10.0, 300),
+              3:('PENCIL BLUE', 0.50, 500),
+              4:('PENCIL RED', 0.50, 600),
+              5:('PENCIL WHITE', 0.50, 900),
+              6:('HEADPHONES', 15.7, 500),
+              7:(u'Japanses Noodles (ラーメン)', 1.1, 500),
              }
-        row = (None,0.0,0)
+        row = (None, 0.0, 0)
         try:
             row = db[id]
         except:
@@ -87,7 +87,7 @@ class ProductService(soaphandler.SoapHandler):
         return row
 
 if __name__ == '__main__':
-    service = [('ProductService',ProductService)]
+    service = [('ProductService', ProductService)]
     app = webservices.WebService(service)
     ws = tornado.httpserver.HTTPServer(app)
     ws.listen(8080)

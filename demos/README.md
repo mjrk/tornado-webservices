@@ -366,7 +366,7 @@ HelloWorldService2 (http://localhost:8080/HelloWorldService2?wsdl):
 
 This service is the classic hello world. The operation sayHello() does not receive any parameters
 this method just return a string with the classic hello world in a array or list in python
-['Hello','World'].
+['Hello', 'World'].
 
 See the code of HelloWorldService2.py for more details.
 

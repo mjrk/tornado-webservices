@@ -64,14 +64,14 @@ class List(complextypes.ComplexType):
 
 class ProductListService(soaphandler.SoapHandler):
 
-    @webservice(_params=Input,_returns=List)
+    @webservice(_params=Input, _returns=List)
     def getProductList(self, input):
         id = input.idList
 
         listOfProduct = List()
         listOfProduct.idList = id
 
-        for i in [1,2,3,4,5,6]:
+        for i in [1, 2, 3, 4, 5, 6]:
             reg = self.database(i)
             output = Product()
             output.id = i
@@ -83,16 +83,16 @@ class ProductListService(soaphandler.SoapHandler):
 
         return listOfProduct
 
-    def database(self,id):
+    def database(self, id):
         """ This method simulates a database of products """
-        db = {1:('COMPUTER',1000.5,100),
-              2:('MOUSE',10.0,300),
-              3:('PENCIL BLUE',0.50,500),
-              4:('PENCIL RED',0.50,600),
-              5:('PENCIL WHITE',0.50,900),
-              6:('HEADPHONES',15.7,500),
+        db = {1:('COMPUTER', 1000.5, 100),
+              2:('MOUSE', 10.0, 300),
+              3:('PENCIL BLUE', 0.50, 500),
+              4:('PENCIL RED', 0.50, 600),
+              5:('PENCIL WHITE', 0.50, 900),
+              6:('HEADPHONES', 15.7, 500),
              }
-        row = (None,0.0,0)
+        row = (None, 0.0, 0)
         try:
             row = db[id]
         except:
@@ -100,7 +100,7 @@ class ProductListService(soaphandler.SoapHandler):
         return row
 
 if __name__ == '__main__':
-    service = [('ProductListService',ProductListService)]
+    service = [('ProductListService', ProductListService)]
     app = webservices.WebService(service)
     ws = tornado.httpserver.HTTPServer(app)
     ws.listen(8080)
