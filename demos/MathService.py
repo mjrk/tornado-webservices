@@ -24,18 +24,22 @@ from tornadows.soaphandler import webservice
 
 class MathService(soaphandler.SoapHandler):
     """ Service that provides math operations of two float numbers """
+
     @webservice(_params=[float,float],_returns=float)
     def add(self, a, b):
         result = a+b
         return result
+
     @webservice(_params=[float,float],_returns=float)
     def sub(self, a, b):
         result = a-b
         return result
+
     @webservice(_params=[float,float],_returns=float)
     def mult(self, a, b):
         result = a*b
         return result
+
     @webservice(_params=[float,float],_returns=float)
     def div(self, a, b):
         result = a/b

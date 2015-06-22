@@ -55,6 +55,7 @@ class List(complextypes.ComplexType):
 
 
 class ProductListService2(soaphandler.SoapHandler):
+
     @webservice(_params=None,_returns=List)
     def getProductList(self):
 

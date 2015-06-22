@@ -44,6 +44,7 @@ class RegisterResponse(complextypes.ComplexType):
 
 
 class RegisterService(soaphandler.SoapHandler):
+
     @webservice(_params=RegisterRequest, _returns=RegisterResponse)
     def register(self, register):
         iduser    = register.iduser

@@ -42,6 +42,7 @@ class Message(complextypes.ComplexType):
 
 class Repository(soaphandler.SoapHandler):
     """ Service of repository, store documents (Document)  """
+
     @webservice(_params=Message,_returns=str)
     def save(self, msg):
         global repo

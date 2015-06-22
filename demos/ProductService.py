@@ -53,6 +53,7 @@ class Product(complextypes.ComplexType):
 
 
 class ProductService(soaphandler.SoapHandler):
+
     @webservice(_params=Input,_returns=Product)
     def getProduct(self, input):
         id = input.idProduct.value

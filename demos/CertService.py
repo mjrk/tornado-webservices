@@ -43,6 +43,7 @@ class CertificateResponse(complextypes.ComplexType):
 
 
 class CertService(soaphandler.SoapHandler):
+
     @webservice(_params=InputRequest, _returns=CertificateResponse)
     def getCertificate(self, input):
         idperson = input.idperson
