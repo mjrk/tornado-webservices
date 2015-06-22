@@ -27,11 +27,13 @@ from tornadows.soaphandler import webservice
 # main domain here. Useful to work in a round-robin way or reverse proxy.
 define("wsdl_hostname", default="mydomain.com", help="WSDL Hostname")
 
+
 class EchoService(soaphandler.SoapHandler):
     """ Echo Service """
     @webservice(_params=xmltypes.String,_returns=xmltypes.String)
     def echo(self, message):
         return 'Echo say : %s' % message
+
 
 class EchoTargetnsService(soaphandler.SoapHandler):
     """ Service to test the use of an overrided target namespace address """
@@ -40,6 +42,7 @@ class EchoTargetnsService(soaphandler.SoapHandler):
     def echo(self, message):
         return 'Echo say : %s' % message
 
+
 class CountService(soaphandler.SoapHandler):
     """ Service that counts the number of items in a list """
     @webservice(_params=xmltypes.Array(xmltypes.String),_returns=xmltypes.Integer)
@@ -47,12 +50,14 @@ class CountService(soaphandler.SoapHandler):
         length = len(list_of_values)
         return length
 
+
 class DivService(soaphandler.SoapHandler):
     """ Service that provides the division operation of two float numbers """
     @webservice(_params=[xmltypes.Float,xmltypes.Float],_returns=xmltypes.Float)
     def div(self, a, b):
         result = a/b
         return result
+
 
 class FibonacciService(soaphandler.SoapHandler):
     """ Service that provides Fibonacci numbers """

@@ -33,13 +33,17 @@ from tornadows.soaphandler import webservice
         roles  : is a python list of User (python class).
 
 """
+
+
 class User(complextypes.ComplexType):
     username = str
     roles = [str]
 
+
 class ListOfUser(complextypes.ComplexType):
     idlist = int
     list = [User]
+
 
 class UserRolesService(soaphandler.SoapHandler):
     @webservice(_params=xmltypes.Integer,_returns=ListOfUser)

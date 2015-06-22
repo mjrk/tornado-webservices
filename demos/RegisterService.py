@@ -26,11 +26,14 @@ import datetime
     python datetime.datetime is equivalent to xml type: xsd:dateTime
     python datetime.time is equivalent to xml type: xsd:time
 """
+
+
 class RegisterRequest(complextypes.ComplexType):
     iduser = str
     names  = str
     birthdate = datetime.date
     email  = str
+
 
 class RegisterResponse(complextypes.ComplexType):
     idregister = int
@@ -38,6 +41,7 @@ class RegisterResponse(complextypes.ComplexType):
     datetimeregister = datetime.datetime
     isvalid = bool
     message = str
+
 
 class RegisterService(soaphandler.SoapHandler):
     @webservice(_params=RegisterRequest, _returns=RegisterResponse)

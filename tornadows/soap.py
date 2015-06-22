@@ -18,6 +18,7 @@
 
 import xml.dom.minidom
 
+
 class SoapMessage:
     """ Implementation of a envelope soap 1.1 with minidom API
 
@@ -47,19 +48,19 @@ class SoapMessage:
         self._envelope.appendChild(self._body)
 
     def getSoap(self):
-        """ Return the soap envelope as xml.dom.minidom.Document 
+        """ Return the soap envelope as xml.dom.minidom.Document
             getSoap() return a xml.dom.minidom.Document object
         """
         return self._soap
 
     def getHeader(self):
-        """ Return the child elements of Header element 
+        """ Return the child elements of Header element
             getHeader() return a list with xml.dom.minidom.Element objects
         """
         return self._header.childNodes
 
     def getBody(self):
-        """ Return the child elements of Body element 
+        """ Return the child elements of Body element
             getBody() return a list with xml.dom.minidom.Element objects
         """
         return self._body.childNodes
@@ -74,7 +75,7 @@ class SoapMessage:
             self._header.appendChild(header)
 
     def setBody(self,body):
-        """ Set the child content to Body element 
+        """ Set the child content to Body element
             setBody(body), body is a xml.dom.minidom.Document object or
             a xml.dom.minidom.Element
         """

@@ -21,6 +21,7 @@ from tornadows import webservices
 from tornadows import xmltypes
 from tornadows.soaphandler import webservice
 
+
 class CurrentTempService(soaphandler.SoapHandler):
      """ Service that return the current temperature, not uses input parameters """
      @webservice(_params=None,_returns=xmltypes.Integer)

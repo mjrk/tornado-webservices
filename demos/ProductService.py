@@ -34,14 +34,16 @@ from tornadows.soaphandler import webservice
     Product is a class that represents the response of the web service.
 
     id: Is a instance of IntegerProperty() that store the id of product
-    name: Is a instance of StringProperty() that store the name of product 
+    name: Is a instance of StringProperty() that store the name of product
     price: Is a instance of FloatProperty() that store the price of product
     stock: Is a instance of IntegerProperty() that store the stock of product
 
 """
 
+
 class Input(complextypes.ComplexType):
     idProduct = complextypes.IntegerProperty()
+
 
 class Product(complextypes.ComplexType):
     id    = complextypes.IntegerProperty()
@@ -49,11 +51,12 @@ class Product(complextypes.ComplexType):
     price = complextypes.FloatProperty()
     stock = complextypes.IntegerProperty()
 
+
 class ProductService(soaphandler.SoapHandler):
     @webservice(_params=Input,_returns=Product)
     def getProduct(self, input):
         id = input.idProduct.value
-        
+
         reg = self.database(id)
 
         output = Product()
@@ -81,7 +84,7 @@ class ProductService(soaphandler.SoapHandler):
         except:
             None
         return row
-    
+
 if __name__ == '__main__':
     service = [('ProductService',ProductService)]
     app = webservices.WebService(service)

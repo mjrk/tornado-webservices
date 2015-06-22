@@ -21,11 +21,13 @@ from tornadows import webservices
 from tornadows import xmltypes
 from tornadows.soaphandler import webservice
 
+
 class EchoService(soaphandler.SoapHandler):
     """ Echo Service """
     @webservice(_params=str,_returns=str)
     def echo(self, message):
         return 'Echo say : %s' % message
+
 
 class EchoTargetnsService(soaphandler.SoapHandler):
     """ Service to test the use of an overrided target namespace address """
@@ -34,6 +36,7 @@ class EchoTargetnsService(soaphandler.SoapHandler):
     def echo(self, message):
         return 'Echo say : %s' % message
 
+
 class CountService(soaphandler.SoapHandler):
     """ Service that counts the number of items in a list """
     @webservice(_params=xmltypes.Array(str),_returns=int)
@@ -41,12 +44,14 @@ class CountService(soaphandler.SoapHandler):
         length = len(list_of_values)
         return length
 
+
 class DivService(soaphandler.SoapHandler):
     """ Service that provides the division operation of two float numbers """
     @webservice(_params=[float,float],_returns=float)
     def div(self, a, b):
         result = a/b
         return result
+
 
 class FibonacciService(soaphandler.SoapHandler):
     """ Service that provides Fibonacci numbers """

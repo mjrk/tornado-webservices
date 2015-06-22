@@ -21,6 +21,7 @@ from tornadows import webservices
 from tornadows import xmltypes
 from tornadows.soaphandler import webservice
 
+
 class HelloWorldService2(soaphandler.SoapHandler):
     """ Service that return an list with Hello and World str elements, not uses input parameters """
     @webservice(_params=None,_returns=xmltypes.Array(xmltypes.String))

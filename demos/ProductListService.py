@@ -23,7 +23,7 @@ from tornadows.soaphandler import webservice
 
 """ This web service implements two python classes as two xml complextypes.
 
-    THIS IS AN ALTERNATIVE IMPLEMENTATION TO ProductService.py. THIS USES 
+    THIS IS AN ALTERNATIVE IMPLEMENTATION TO ProductService.py. THIS USES
     PYTHON TYPES FOR THE ATTRIBUTES OF THE CLASS.
 
     Input is a class that represents the input parameter (request) for the
@@ -34,7 +34,7 @@ from tornadows.soaphandler import webservice
     Product is a class that represents Product data structure.
 
     id: Is a int python type. Is the product id
-    name: Is a str python type. Is the name of product. 
+    name: Is a str python type. Is the name of product.
     price: Is a float python type. Is the price of product.
     stock: Is a int python type. Is the stock of product.
 
@@ -45,8 +45,10 @@ from tornadows.soaphandler import webservice
 
 """
 
+
 class Input(complextypes.ComplexType):
-    idList = int 
+    idList = int
+
 
 class Product(complextypes.ComplexType):
     id    = int
@@ -54,9 +56,11 @@ class Product(complextypes.ComplexType):
     price = float
     stock = int
 
+
 class List(complextypes.ComplexType):
     idList = int
     product = [Product]
+
 
 class ProductListService(soaphandler.SoapHandler):
     @webservice(_params=Input,_returns=List)
@@ -65,7 +69,7 @@ class ProductListService(soaphandler.SoapHandler):
 
         listOfProduct = List()
         listOfProduct.idList = id
-        
+
         for i in [1,2,3,4,5,6]:
             reg = self.database(i)
             output = Product()
@@ -73,7 +77,7 @@ class ProductListService(soaphandler.SoapHandler):
             output.name  = reg[0]
             output.price = reg[1]
             output.stock = reg[2]
-    
+
             listOfProduct.product.append(output)
 
         return listOfProduct
@@ -93,7 +97,7 @@ class ProductListService(soaphandler.SoapHandler):
         except:
             None
         return row
-    
+
 if __name__ == '__main__':
     service = [('ProductListService',ProductListService)]
     app = webservices.WebService(service)

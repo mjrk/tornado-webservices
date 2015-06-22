@@ -21,6 +21,7 @@ from tornadows import webservices
 from tornadows import xmltypes
 from tornadows.soaphandler import webservice
 
+
 class MathService(soaphandler.SoapHandler):
     """ Service that provides math operations of two float numbers """
     @webservice(_params=[float,float],_returns=float)

@@ -19,13 +19,18 @@ from tornadows import soaphandler, webservices, complextypes
 from tornadows.soaphandler import webservice
 import datetime
 
-""" This example uses python datetime module. 
+""" This example uses python datetime module.
     python datetime.date is equivalent to xml type: xsd:date
     python datetime.datetime is equivalent to xml type: xsd:dateTime
     python datetime.time is equivalent to xml type: xsd:time
 """
+
+
+
 class InputRequest(complextypes.ComplexType):
     idperson = str
+
+
 
 class CertificateResponse(complextypes.ComplexType):
     numcert = int
@@ -34,6 +39,8 @@ class CertificateResponse(complextypes.ComplexType):
     birthday = datetime.date
     datetimecert = datetime.datetime
     isvalid = bool
+
+
 
 class CertService(soaphandler.SoapHandler):
     @webservice(_params=InputRequest, _returns=CertificateResponse)

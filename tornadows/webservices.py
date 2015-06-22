@@ -21,6 +21,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.wsgi
 
+
 class WebService(tornado.web.Application):
     """ A implementation of web services for tornado web server.
 
@@ -69,6 +70,7 @@ class WebService(tornado.web.Application):
             self._services = [(r"/"+str(self._service),self._object),
                       (r"/"+str(self._service)+"/",self._object),]
             tornado.web.Application.__init__(self,self._services)
+
 
 class WSGIWebService(tornado.wsgi.WSGIApplication):
     """ A implementation of web services for tornado web server.

@@ -26,6 +26,7 @@ import datetime
 # This dictionary emulate a documental repository
 repo = {}
 
+
 class Document(complextypes.ComplexType):
     number = int
     theme = str
@@ -33,9 +34,11 @@ class Document(complextypes.ComplexType):
     text = str
     created = datetime.date
 
+
 class Message(complextypes.ComplexType):
     doc = Document
     msg = str
+
 
 class Repository(soaphandler.SoapHandler):
     """ Service of repository, store documents (Document)  """

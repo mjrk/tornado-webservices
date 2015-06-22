@@ -30,6 +30,7 @@ from tornadows import wsdl
 """ Global variable. If you want use your own wsdl file """
 wsdl_path = None
 
+
 def webservice(*params,**kwparams):
     """ Decorator method for web services operators """
     def method(f):
@@ -81,6 +82,7 @@ def webservice(*params,**kwparams):
         return operation
     return method
 
+
 def soapfault(faultstring):
     """ Method for generate a soap fault
         soapfault() return a SoapMessage() object with a message
@@ -93,6 +95,7 @@ def soapfault(faultstring):
     faultmsg += '</soapenv:Fault>\n'
     fault.setBody(xml.dom.minidom.parseString(faultmsg))
     return fault
+
 
 class SoapHandler(tornado.web.RequestHandler):
     """ This subclass extends tornado.web.RequestHandler class, defining the

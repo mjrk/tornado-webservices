@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-""" 
+"""
     Are incorporated the primitive datatypes defined by XML.
     Array is defined for the use of array of elements and his respective datatype.
 """
@@ -22,9 +22,11 @@
 import inspect
 from tornadows import complextypes
 
+
 def createElementXML(name,type,prefix='xsd'):
     """ Function used for the creation of xml elements. """
     return '<%s:element name="%s" type="%s:%s"/>'%(prefix,name,prefix,type)
+
 
 def createArrayXML(name,type,prefix='xsd',maxoccurs=None):
     """ Function used for the creation of xml complexElements """
@@ -39,15 +41,16 @@ def createArrayXML(name,type,prefix='xsd',maxoccurs=None):
     complexType += '<%s:element name="%s" type="tns:%sParams"/>\n'%(prefix,name,name)
     return complexType
 
+
 class Array:
     """ Create arrays of xml elements.
-        
+
         Here an example:
 
         @webservices(_params=xmltypes.Array(xmltypes.Integer),_returns=xmltypes.Integer)
         def function(sefl, list_of_elements):
         for e in list_of_elements:
-        # Do something with the element    
+        # Do something with the element
             return len(list_of_elements)
 
         xmltypes.Array(xmltype.Integer) generate an xml element into schema definition:
@@ -98,9 +101,11 @@ class Array:
                 value = False
         return value
 
+
 class PrimitiveType:
     """ Class father for all derived types. """
     pass
+
 
 class Integer(PrimitiveType):
     """ 1. XML primitive type : integer """
@@ -114,6 +119,7 @@ class Integer(PrimitiveType):
     def genType(self,v):
         return int(v)
 
+
 class Decimal(PrimitiveType):
     """ 2. XML primitive type : decimal """
     @staticmethod
@@ -125,6 +131,7 @@ class Decimal(PrimitiveType):
     @classmethod
     def genType(self,v):
         return float(v)
+
 
 class Double(PrimitiveType):
     """ 3. XML primitive type : double """
@@ -138,6 +145,7 @@ class Double(PrimitiveType):
     def genType(self,v):
         return float(v)
 
+
 class Float(PrimitiveType):
     """ 4. XML primitive type : float """
     @staticmethod
@@ -149,6 +157,7 @@ class Float(PrimitiveType):
     @classmethod
     def genType(self,v):
         return float(v)
+
 
 class Duration(PrimitiveType):
     """ 5. XML primitive type : duration """
@@ -162,6 +171,7 @@ class Duration(PrimitiveType):
     def genType(self,v):
         return str(v)
 
+
 class Date(PrimitiveType):
     """ 6. XML primitive type : date """
     @staticmethod
@@ -173,6 +183,7 @@ class Date(PrimitiveType):
     @classmethod
     def genType(self,v):
         return str(v)
+
 
 class Time(PrimitiveType):
     """ 7. XML primitive type : time """
@@ -186,6 +197,7 @@ class Time(PrimitiveType):
     def genType(self,v):
         return str(v)
 
+
 class DateTime(PrimitiveType):
     """ 8. XML primitive type : dateTime """
     @staticmethod
@@ -198,6 +210,7 @@ class DateTime(PrimitiveType):
     def genType(self,v):
         return str(v)
 
+
 class String(PrimitiveType):
     """ 9. XML primitive type : string """
     @staticmethod
@@ -209,6 +222,7 @@ class String(PrimitiveType):
     @classmethod
     def genType(self,v):
         return str(v)
+
 
 class Boolean(PrimitiveType):
     """ 10. XML primitive type : boolean """

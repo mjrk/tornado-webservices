@@ -47,9 +47,11 @@ import xml.dom.minidom
 import inspect
 from datetime import date, datetime, time
 
+
 class Property:
     """ Class base for definition of properties of the attributes of a python class """
     pass
+
 
 class IntegerProperty(Property):
     """ Class for definitions of Integer Property """
@@ -57,11 +59,13 @@ class IntegerProperty(Property):
         self.type = tornadows.xmltypes.Integer
         self.value = None
 
+
 class DecimalProperty(Property):
     """ Class for definitions of Decimal Property """
     def __init__(self):
         self.type = tornadows.xmltypes.Decimal
         self.value = None
+
 
 class DoubleProperty(Property):
     """ Class for definitions of Double Property """
@@ -69,11 +73,13 @@ class DoubleProperty(Property):
         self.type = tornadows.xmltypes.Double
         self.value = None
 
+
 class FloatProperty(Property):
     """ Class for definitions of Float Property """
     def __init__(self):
         self.type = tornadows.xmltypes.Float
         self.value = None
+
 
 class DurationProperty(Property):
     """ Class for definitions of Duration Property """
@@ -81,11 +87,13 @@ class DurationProperty(Property):
         self.type = tornadows.xmltypes.Duration
         self.value = None
 
+
 class DateProperty(Property):
     """ Class for definitions of Date Property """
     def __init__(self):
         self.type = tornadows.xmltypes.Date
         self.value = None
+
 
 class TimeProperty(Property):
     """ Class for definitions of Time Property """
@@ -93,11 +101,13 @@ class TimeProperty(Property):
         self.type = tornadows.xmltypes.Time
         self.value = None
 
+
 class DateTimeProperty(Property):
     """ Class for definitions of DateTime Property """
     def __init__(self):
         self.type = tornadows.xmltypes.DateTime
         self.value = None
+
 
 class StringProperty(Property):
     """ Class for definitions of String Property """
@@ -105,11 +115,13 @@ class StringProperty(Property):
         self.type = tornadows.xmltypes.String
         self.value = None
 
+
 class BooleanProperty(Property):
     """ Class for definitions of Boolean Property """
     def __init__(self):
         self.type = tornadows.xmltypes.Boolean
         self.value = None
+
 
 class ArrayProperty(list):
     """ For create a list of classes """
@@ -128,6 +140,7 @@ class ArrayProperty(list):
         elif self._maxOccurs != None:
             xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s" maxOccurs="%s"/>'%(namespace,nameelement,self._object.getName(),str(self._minOccurs),str(self._maxOccurs))
         return xsd
+
 
 class ComplexType(object):
     """ Base class for definitions of python class like xml document and schema:
