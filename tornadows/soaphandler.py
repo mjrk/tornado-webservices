@@ -163,16 +163,22 @@ class SoapHandler(tornado.web.RequestHandler):
 				operation = getattr(self,operations)
 				method = ''
 				if callable(operation) and hasattr(operation,'_is_operation'):
-					num_methods = self._countOperations()
-					if hasattr(operation,'_operation') and soapaction.endswith(getattr(operation,'_operation')) and num_methods > 1:
-						method = getattr(operation,'_operation')
-						self._executeOperation(operation, done, method=method)
-						break
-					elif num_methods == 1:
-						self._executeOperation(operation, done, method='')
+					try:
+						num_methods = self._countOperations()
+						if hasattr(operation,'_operation') and soapaction.endswith(getattr(operation,'_operation')) and num_methods > 1:
+							method = getattr(operation,'_operation')
+							self._executeOperation(operation, done, method=method)
+							break
+						elif num_methods == 1:
+							self._executeOperation(operation, done, method='')
+							break
+					except Exception as invalid:
+						self.set_status(400)
+						done(soapfault('Malformed request: %s' % invalid))
 						break
 		except Exception as detail:
-			done(soapfault('Error in web service : %s'%detail))
+			self.set_status(500)
+			done(soapfault('Error in web service: %s' % detail))
 
 	def _countOperations(self):
 		""" Private method that counts the operations on the web services """
