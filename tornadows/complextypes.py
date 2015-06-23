@@ -125,7 +125,7 @@ class BooleanProperty(Property):
 
 class ArrayProperty(list):
     """ For create a list of classes """
-    def __init__(self, object, minOccurs = 1, maxOccurs=None, data=[]):
+    def __init__(self, object, minOccurs=1, maxOccurs=None, data=[]):
         list.__init__(self, data)
         self._minOccurs = minOccurs
         self._maxOccurs = maxOccurs
@@ -135,9 +135,9 @@ class ArrayProperty(list):
     def toXSD(self, namespace='xsd', nameelement=None):
         """ Create xml complex type for ArrayProperty """
         xsd = self._object.toXSD()
-        if self._maxOccurs == None:
+        if self._maxOccurs is None:
             xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s"/>' % (namespace, nameelement, self._object.getName(), self._minOccurs)
-        elif self._maxOccurs != None:
+        elif self._maxOccurs is not None:
             xsd += '<%s:element name="%s" type="tns:%s" minOccurs="%s" maxOccurs="%s"/>' % (namespace, nameelement, self._object.getName(), str(self._minOccurs), str(self._maxOccurs))
         return xsd
 
@@ -199,7 +199,7 @@ class ComplexType(object):
          """
         nameroot = None
 
-        if name == None:
+        if name is None:
             nameroot = self.__class__.__name__
         else:
             nameroot = name
@@ -211,7 +211,7 @@ class ComplexType(object):
             if default_attr.count(key) > 0:
                 continue
             element = findElementFromDict(self.__dict__, key)
-            if element == None:
+            if element is None:
                 continue
             if isinstance(element, list):
                 for e in element:
@@ -233,7 +233,6 @@ class ComplexType(object):
         """ Class method that creates the XSD document for the python class.
             Return a string with the xml schema.
          """
-        name = cls.__name__
         xsd = cls._generateXSD(ltype=ltype)
         return xsd
 
@@ -252,7 +251,7 @@ class ComplexType(object):
             if default_attr.count(key) > 0:
                 continue
             element = findElementFromDict(cls.__dict__, key)
-            if element == None:
+            if element is None:
                 continue
             if isinstance(element, Property):
                 xsd += element.type.createElement(str(key))
@@ -338,7 +337,7 @@ class ComplexType(object):
         elif issubclass(element, ComplexType):
             return element()
         else:
-            if   element.__name__ == 'int':
+            if element.__name__ == 'int':
                 return int
             elif element.__name__ == 'decimal':
                 return float
@@ -359,6 +358,7 @@ class ComplexType(object):
             elif element.__name__ == 'bool':
                 return bool
 
+
 def xml2object(xml, xsd, complex, method=''):
     """ Function that converts a XML document in a instance of a python class """
     namecls = complex.getName()
@@ -367,6 +367,7 @@ def xml2object(xml, xsd, complex, method=''):
     tps = cls2dict(complex)
     obj = generateOBJ(lst, namecls, tps)
     return obj
+
 
 def cls2dict(complex):
     """ Function that creates a dictionary from a ComplexType class with the attributes and types """
@@ -377,9 +378,10 @@ def cls2dict(complex):
             continue
         else:
             elem = findElementFromDict(complex.__dict__, attr)
-            if elem != None:
+            if elem is not None:
                 dct[attr] = elem
     return dct
+
 
 def xsd2dict(xsd, namespace='xsd'):
     """ Function that creates a dictionary from a xml schema with the type of element """
@@ -397,13 +399,14 @@ def xsd2dict(xsd, namespace='xsd'):
         dct[str(e.getAttribute('name'))] = (val, typ, lst)
     return dct
 
+
 def xml2list(xmldoc, name, types, method=''):
     """ Function that creates a list from xml documento with a tuple element and value """
     name = name+method
 
     x = xml.dom.minidom.parseString(xmldoc)
     c = None
-    if x.documentElement.prefix != None:
+    if x.documentElement.prefix is not None:
         c = x.getElementsByTagName(x.documentElement.prefix+':'+name)
     else:
         c = x.getElementsByTagName(name)
@@ -429,6 +432,7 @@ def xml2list(xmldoc, name, types, method=''):
             lst.append((str(a.nodeName), val, isarray))
     return lst
 
+
 def generateOBJ(d, namecls, types):
     """ Function that creates a object from a xml document """
     dct = {}
@@ -451,6 +455,7 @@ def generateOBJ(d, namecls, types):
             else:
                 dct[name] = value
     return type(namecls, (ComplexType,), dct)
+
 
 def createProperty(typ, value):
     """ Function that creates a Property class instance, with the value """
@@ -488,6 +493,7 @@ def createProperty(typ, value):
 
     return ct
 
+
 def genattr(elems):
     """ Function that generates a list with the childnodes of a xml element  """
     d = []
@@ -495,6 +501,7 @@ def genattr(elems):
         if e.nodeType == e.ELEMENT_NODE:
             d.append(e)
     return d
+
 
 def findElementFromDict(dictionary, key):
     """ Function to find a element into a dictionary for the key """
@@ -504,6 +511,7 @@ def findElementFromDict(dictionary, key):
         return element
     except KeyError:
         return None
+
 
 def convert(typeelement, value):
     """ Function that converts a value depending his type """
@@ -544,6 +552,7 @@ def convert(typeelement, value):
         return str(value)
     elif typeelement == 'xsd:boolean' or typeelement == 'bool':
         return str(value).lower()
+
 
 def createPythonType2XMLType(pyType):
     """ Function that creates a xml type from a python type """

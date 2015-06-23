@@ -37,10 +37,14 @@ class SoapMessage:
         envurl = 'http://schemas.xmlsoap.org/soap/envelope/'
         self._envelope = self._soap.createElementNS(envurl, 'soapenv:Envelope')
         self._envelope.setAttribute('xmlns:soapenv', envurl)
-        self._envelope.setAttribute('xmlns:xsi',
-                "http://www.w3.org/2001/XMLSchema-instance")
-        self._envelope.setAttribute('xsi:schemaLocation',
-                ' '.join((envurl, envurl)))
+        self._envelope.setAttribute(
+            'xmlns:xsi',
+            "http://www.w3.org/2001/XMLSchema-instance"
+        )
+        self._envelope.setAttribute(
+            'xsi:schemaLocation',
+            ' '.join((envurl, envurl))
+        )
         self._soap.appendChild(self._envelope)
         self._header = self._soap.createElement('soapenv:Header')
         self._body = self._soap.createElement('soapenv:Body')
@@ -87,11 +91,11 @@ class SoapMessage:
     def removeHeader(self):
         """ Remove the last child elements from Header element """
         lastElement = self._header.lastChild
-        if lastElement != None:
+        if lastElement is not None:
             self._header.removeChild(lastElement)
 
     def removeBody(self):
         """ Remove last child elements from Body element """
         lastElement = self._body.lastChild
-        if lastElement != None:
+        if lastElement is not None:
             self._body.removeChild(lastElement)

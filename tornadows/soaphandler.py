@@ -19,7 +19,6 @@
 import tornado.httpserver
 import tornado.web
 import xml.dom.minidom
-import string
 import inspect
 from tornado.options import options
 from tornadows import soap
@@ -50,7 +49,7 @@ def webservice(*params, **kwparams):
                 i = 0
                 for arg in _args:
                     _input[arg] = _params[i]
-                    i+=1
+                    i += 1
             else:
                 _args = inspect.getargspec(f).args[1:]
                 _input = {}
@@ -67,6 +66,7 @@ def webservice(*params, **kwparams):
                 _output = _returns
             else:
                 _output = _returns
+
         def operation(*args, **kwargs):
             return f(*args, **kwargs)
 
@@ -110,7 +110,8 @@ class SoapHandler(tornado.web.RequestHandler):
         else:
             address = getattr(self, 'targetns_address', tornado.httpserver.socket.gethostbyname(tornado.httpserver.socket.gethostname()))
 
-        port = 80 # if you are using the port 80
+        # if you are using the port 80
+        port = 80
         if len(self.request.headers['Host'].split(':')) >= 2:
             port = self.request.headers['Host'].split(':')[1]
         wsdl_nameservice = self.request.uri.replace('/', '').replace('?wsdl', '').replace('?WSDL', '')
@@ -128,7 +129,7 @@ class SoapHandler(tornado.web.RequestHandler):
                 wsdl_output = getattr(operation, '_output')
                 wsdl_operation = getattr(operation, '_operation')
                 wsdl_args = getattr(operation, '_args')
-                wsdl_data = {'args':wsdl_args, 'input':('params', wsdl_input), 'output':('returns', wsdl_output), 'operation':wsdl_operation}
+                wsdl_data = {'args': wsdl_args, 'input': ('params', wsdl_input), 'output': ('returns', wsdl_output), 'operation': wsdl_operation}
                 wsdl_methods.append(wsdl_data)
 
         wsdl_targetns = 'http://%s:%s/%s' % (address, port, wsdl_nameservice)
@@ -136,7 +137,7 @@ class SoapHandler(tornado.web.RequestHandler):
         query = self.request.query
         self.set_header('Content-Type', 'application/xml; charset=UTF-8')
         if query.upper() == 'WSDL':
-            if wsdl_path == None:
+            if wsdl_path is None:
                 wsdlfile = wsdl.Wsdl(nameservice=wsdl_nameservice,
                                      targetNamespace=wsdl_targetns,
                                      methods=wsdl_methods,
@@ -211,6 +212,7 @@ class SoapHandler(tornado.web.RequestHandler):
         is_array = None
         if hasattr(operation, '_outputArray') and getattr(operation, '_outputArray'):
             is_array = getattr(operation, '_outputArray')
+
         def done(response):
             response = response()
             typesoutput = getattr(operation, '_output')
@@ -271,7 +273,7 @@ class SoapHandler(tornado.web.RequestHandler):
             if element.nodeType == element.ELEMENT_NODE:
                 prefix = element.prefix
                 namespace = element.namespaceURI
-                if prefix != None and namespace != None:
+                if prefix is not None and namespace is not None:
                     element.setAttribute('xmlns:'+prefix, namespace)
                 else:
                     element.setAttribute('xmlns:xsd', "http://www.w3.org/2001/XMLSchema")
@@ -335,11 +337,11 @@ class SoapHandler(tornado.web.RequestHandler):
             xmlresponse = '<returns>\n'
             i = 1
             for r in result:
-                if is_array == True:
+                if is_array is True:
                     xmlresponse += '<value>%s</value>\n' % str(r)
                 else:
                     xmlresponse += '<value%d>%s</value%d>\n' % (i, str(r), i)
-                i+=1
+                i += 1
             xmlresponse += '</returns>\n'
         else:
             xmlresponse = '<returns>%s</returns>\n' % str(result)

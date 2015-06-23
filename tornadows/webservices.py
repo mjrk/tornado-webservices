@@ -56,7 +56,7 @@ class WebService(tornado.web.Application):
             service (service), the class with the web service (object)
             and wsdl with the wsdl file path (if this exist).
          """
-        if isinstance(services, list) and object == None:
+        if isinstance(services, list) and object is None:
             srvs = []
             for s in services:
                 srv = s[0]
@@ -67,8 +67,10 @@ class WebService(tornado.web.Application):
         else:
             self._service = services
             self._object = object
-            self._services = [(r"/"+str(self._service), self._object),
-                      (r"/"+str(self._service)+"/", self._object),]
+            self._services = [
+                (r"/"+str(self._service), self._object),
+                (r"/"+str(self._service)+"/", self._object),
+            ]
             tornado.web.Application.__init__(self, self._services)
 
 
@@ -105,7 +107,7 @@ class WSGIWebService(tornado.wsgi.WSGIApplication):
             service (service), the class with the web service (object)
             and wsdl with the wsdl file path (if this exist).
          """
-        if isinstance(services, list) and object == None:
+        if isinstance(services, list) and object is None:
             srvs = []
             for s in services:
                 srv = s[0]
@@ -116,6 +118,8 @@ class WSGIWebService(tornado.wsgi.WSGIApplication):
         else:
             self._service = services
             self._object = object
-            self._services = [(r"/"+str(self._service), self._object),
-                      (r"/"+str(self._service)+"/", self._object),]
+            self._services = [
+                (r"/"+str(self._service), self._object),
+                (r"/"+str(self._service)+"/", self._object),
+            ]
             tornado.wsgi.WSGIApplication.__init__(self, self._services, default_host, **settings)
