@@ -62,7 +62,13 @@ class Wsdl:
                     ltype.append(self._elementInput.getName())
                     types += self._elementInput.toXSD(method=method, ltype=ltype)
 
-                types += '<%s:element name="%s" type="tns:%s"/>' % (namespace, typeInput, self._elementInput.getName())
+                # types += '<%s:element name="%s" type="tns:%s"/>' % (namespace, typeInput, self._elementInput.getName())
+
+                content = '<xsd:complexType><xsd:sequence><xsd:element minOccurs="1" maxOccurs="1" name="%s" type="tns:%s"/></xsd:sequence></xsd:complexType>' %\
+                    (self._elementInput.getName(), self._elementInput.getName())
+
+                type_ = '<%s:element name="%s">' % (namespace, typeInput) + content + '</%s:element>' % namespace
+                types += type_
 
             elif isinstance(self._elementInput, dict):
                 typeInput = self._elementNameInput+method
